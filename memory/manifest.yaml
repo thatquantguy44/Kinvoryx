@@ -1,0 +1,32 @@
+version: 1
+updated_at: "2026-08-08"
+status: active
+store_type: committed_metadata_only
+access_level: repo
+source_standard:
+  path: "/Users/joshualutkemuller/Documents/Quant Sandbox/agentic_workflows/qf_workflow_sdk_public/instructions/workflow_memory.md"
+  applied_as: "Kinvoryx repo-local memory protocol"
+rules:
+  metadata_only: true
+  secrets_allowed: false
+  pii_allowed: false
+  raw_household_data_allowed: false
+  supersede_instead_of_overwrite: true
+  specs_remain_source_truth: true
+prime_order:
+  - AGENTS.md
+  - docs/hdi-master-handoff.md
+  - memory/manifest.yaml
+  - relevant memory/<workflow>/index.yaml
+  - relevant memory/<workflow>/lessons.md
+workflows:
+  - id: kinvoryx_platform
+    path: memory/kinvoryx_platform/
+    scope: platform-wide product, engineering, spec, and repo workflow lessons
+    owner: repository-maintainers
+    access_level: repo
+  - id: spec_011_cash_inflow_decision_brief
+    path: memory/spec_011_cash_inflow_decision_brief/
+    scope: Spec 011 cash-inflow decision brief implementation and review lessons
+    owner: product-optimization-research
+    access_level: repo

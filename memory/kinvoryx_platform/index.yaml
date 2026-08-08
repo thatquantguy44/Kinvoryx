@@ -1,0 +1,60 @@
+workflow_id: kinvoryx_platform
+updated_at: "2026-08-08"
+access_level: repo
+records:
+  - id: MEM-KIN-20260808-001
+    scope: spec_driven_development
+    type: decision
+    statement: "Kinvoryx work should keep the master handoff, numbered specs, implementation, tests, and evidence traceable to stable requirement and acceptance IDs."
+    evidence:
+      - AGENTS.md
+      - docs/hdi-master-handoff.md
+      - docs/specs/011-cash-inflow-allocation-decision-brief.md
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
+  - id: MEM-KIN-20260808-002
+    scope: product_boundary
+    type: decision
+    statement: "The platform boundary is decision support with deterministic calculations and transparent alternatives; it must not drift into autonomous advice, execution, security selection, or unsupported jurisdiction conclusions."
+    evidence:
+      - docs/hdi-master-handoff.md
+      - docs/specs/011-cash-inflow-allocation-decision-brief.md
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
+  - id: MEM-KIN-20260808-003
+    scope: repo_workflow
+    type: pitfall
+    statement: "The worktree may contain user-created docs unrelated to the active spec; commits should stage only the intended spec slice unless the user explicitly asks to include the unrelated files."
+    evidence:
+      - "Untracked docs/strategy/kinvoryx-domain-acquisition-strategy.md observed during Spec 011 Slice C follow-up."
+    confidence: medium
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
+  - id: MEM-KIN-20260808-004
+    scope: agentic_workflow_sdk
+    type: pattern
+    statement: "Before architecture, validation, documentation, or agent-workflow changes, consult the external qf_workflow_sdk_public reference and reuse its patterns without editing or vendoring it by default."
+    evidence:
+      - AGENTS.md
+      - memory/manifest.yaml
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"

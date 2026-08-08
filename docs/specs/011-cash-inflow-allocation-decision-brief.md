@@ -1,6 +1,6 @@
 # 011 Cash Inflow Allocation Decision Brief
 
-**Status:** Draft - vertical slice in progress
+**Status:** Draft - Slices A-C implemented; Slice D next
 **Source:** [Household Decision Intelligence Overview](../Household%20Decision%20Intelligence%20Overview.md)
 **Primary phases:** 0-1
 **Related specs:** [001](001-product-foundation.md), [002](002-household-state-and-data-model.md), [004](004-capital-allocation-optimizer.md), [007](007-validation-and-market-research.md)

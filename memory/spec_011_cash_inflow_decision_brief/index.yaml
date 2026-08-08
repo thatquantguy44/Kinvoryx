@@ -1,0 +1,79 @@
+workflow_id: spec_011_cash_inflow_decision_brief
+updated_at: "2026-08-08"
+access_level: repo
+records:
+  - id: MEM-S011-20260808-001
+    scope: slice_sequence
+    type: decision
+    statement: "Spec 011 should advance through deterministic core, validation harness, interface/export, then governed pilot readiness."
+    evidence:
+      - docs/specs/011-cash-inflow-allocation-decision-brief.md
+      - src/kinvoryx/cash_inflow.py
+      - src/kinvoryx/cash_inflow_validation.py
+      - src/kinvoryx/cash_inflow_rendering.py
+      - src/kinvoryx/cash_inflow_interface.py
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
+  - id: MEM-S011-20260808-002
+    scope: validation
+    type: pattern
+    statement: "Validation should prove synthetic consistency through golden fixtures, invariant checks, property sweeps, and traceable test names before expanding product surface."
+    evidence:
+      - src/kinvoryx/cash_inflow_validation.py
+      - tests/test_cash_inflow_validation.py
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
+  - id: MEM-S011-20260808-003
+    scope: rendering
+    type: decision
+    statement: "Rendering must consume the retained DecisionBrief and must not recalculate, rerank, or select a winner."
+    evidence:
+      - src/kinvoryx/cash_inflow_rendering.py
+      - tests/test_cash_inflow_rendering.py
+      - docs/specs/011-cash-inflow-allocation-decision-brief.md
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
+  - id: MEM-S011-20260808-004
+    scope: reviewer_annotations
+    type: decision
+    statement: "Reviewer annotations are structured review evidence and pilot-readiness gates; they are not calculation inputs."
+    evidence:
+      - src/kinvoryx/cash_inflow_validation.py
+      - docs/specs/011-cash-inflow-allocation-decision-brief.md
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
+  - id: MEM-S011-20260808-005
+    scope: interface
+    type: pattern
+    statement: "The first manual-entry interface should remain local, synthetic, dependency-free, and comparison-oriented until governed pilot readiness is specified."
+    evidence:
+      - src/kinvoryx/cash_inflow_interface.py
+      - examples/demo/cash_inflow_decision_brief_interface.py
+      - tests/test_cash_inflow_rendering.py
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
