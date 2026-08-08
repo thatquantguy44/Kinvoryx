@@ -28,7 +28,7 @@ class CashInflowDecisionBriefTests(unittest.TestCase):
             near_term_goal_remaining="15000",
         )
 
-    def test_generates_all_required_alternatives_and_baseline(self) -> None:
+    def test_ac_cib_002_generates_all_required_alternatives_and_baseline(self) -> None:
         brief = build_decision_brief(self.household)
 
         self.assertEqual(brief.baseline.strategy, "waterfall_baseline")
@@ -38,7 +38,7 @@ class CashInflowDecisionBriefTests(unittest.TestCase):
             {strategy.value for strategy in Strategy},
         )
 
-    def test_every_plan_conserves_inflow_and_respects_capacity(self) -> None:
+    def test_ac_cib_003_every_plan_conserves_inflow_and_respects_capacity(self) -> None:
         brief = build_decision_brief(self.household)
         plans = (brief.baseline,) + brief.alternatives
 
@@ -49,7 +49,7 @@ class CashInflowDecisionBriefTests(unittest.TestCase):
             self.assertLessEqual(plan.allocations["near_term_goal"], Decimal("15000"))
             self.assertLessEqual(plan.allocations["debt_paydown"], Decimal("18000"))
 
-    def test_alternatives_produce_material_tradeoffs(self) -> None:
+    def test_ac_cib_005_alternatives_produce_material_tradeoffs(self) -> None:
         plans = {plan.strategy: plan for plan in build_decision_brief(self.household).alternatives}
 
         self.assertGreater(
@@ -69,7 +69,7 @@ class CashInflowDecisionBriefTests(unittest.TestCase):
             plans[Strategy.SAFETY_FIRST.value].metrics.near_term_goal_funded,
         )
 
-    def test_scenarios_and_tradeoffs_are_present_for_every_alternative(self) -> None:
+    def test_ac_cib_004_scenarios_and_tradeoffs_are_present_for_every_alternative(self) -> None:
         for plan in build_decision_brief(self.household).alternatives:
             self.assertGreaterEqual(len(plan.tradeoffs), 3)
             self.assertEqual(
@@ -77,7 +77,7 @@ class CashInflowDecisionBriefTests(unittest.TestCase):
                 {"job_loss", "unexpected_expense", "market_decline", "goal_cost_increase"},
             )
 
-    def test_non_synthetic_cases_are_rejected(self) -> None:
+    def test_ac_cib_001_non_synthetic_cases_are_rejected(self) -> None:
         household = HouseholdCase(
             case_id="not-allowed",
             cash_inflow="1000",
@@ -95,7 +95,7 @@ class CashInflowDecisionBriefTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "synthetic"):
             build_decision_brief(household)
 
-    def test_case_without_supported_debt_still_generates_a_brief(self) -> None:
+    def test_ac_cib_006_case_without_supported_debt_still_generates_a_brief(self) -> None:
         household = HouseholdCase(
             case_id="no-debt-case",
             cash_inflow="1000",

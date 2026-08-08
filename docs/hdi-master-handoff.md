@@ -62,7 +62,7 @@ The numbered specs below are the canonical implementation handoff units. New spe
 | Phase | Name | Outcome | Primary Specs | Exit Gates |
 |---:|---|---|---|---|
 | 0 | Discovery and falsification | Pick a beachhead, trigger event, buyer, pricing hypothesis, and value proposition | 001, 007 | GATE-M1, GATE-M2, counsel issue map clear enough for prototype |
-| 1 | HCAO research prototype | Manual-input decision engine with baseline, alternatives, scenarios, trace, and synthetic validation | 002, 003, 004, 005, 006, 007 | Phase 1 Must requirements pass; 100% reconciliation on validation cases |
+| 1 | HCAO research prototype | Manual-input decision engine with baseline, alternatives, scenarios, trace, synthetic validation, and reviewable decision artifacts | 002, 003, 004, 005, 006, 007, 011 | Phase 1 Must requirements pass; 100% reconciliation on validation cases |
 | 2 | Controlled human pilot | Secure onboarding, limited real households, human review, payment evidence, override capture | 001-009 | GATE-M3, GATE-M4, no severe privacy/safety issue |
 | 3 | Professional and employer distribution | Adviser/CPA workspace, org policy governance, review queue, batch monitoring, audit | 003, 005, 006, 008, 009 | GATE-M5; viable pipeline economics in at least two channel types |
 | 4 | Adjacent financial modules | Add approved financial extensions one at a time | 006, 010 | REQ-EXT admission gates and module-specific validation pass |
@@ -88,7 +88,7 @@ The numbered specs below are the canonical implementation handoff units. New spe
 | FEAT-013 | Organization policy, assumption, and audit governance | 3 | [008](specs/008-professional-enterprise-workflows.md) | REQ-LAB-050-064 |
 | FEAT-014 | Market validation and TAM model | 0-3 | [007](specs/007-validation-and-market-research.md) | GATE-M1-M5, AC-010-011 |
 | FEAT-015 | Extension admission and sequencing | 4-6 | [010](specs/010-extension-portfolio.md) | REQ-EXT-001-007 |
-| FEAT-016 | Cash-inflow allocation decision brief | 0-1 | [011](specs/011-cash-inflow-allocation-decision-brief.md) | REQ-CIB-001-010, REQ-020-045 |
+| FEAT-016 | Cash-inflow allocation decision brief | 0-1 | [011](specs/011-cash-inflow-allocation-decision-brief.md) | REQ-CIB-001-023, AC-CIB-001-013 |
 
 ## 6. Cross-Cutting Architectural Contracts
 
@@ -112,11 +112,43 @@ The program is ready to move from specification to design when:
 - State-rule coverage claims match the jurisdiction coverage matrix.
 - Extension modules remain gated until they pass independent admission requirements.
 
-## 8. Immediate Next Handoff Steps
+## 8. Current Build State
+
+As of August 8, 2026, Spec 011 has progressed through the first three vertical slices on branch `011-cash-inflow-allocation-decision-brief`.
+
+| Slice | State | Primary Evidence | Notes |
+|---|---|---|---|
+| Slice A - Deterministic core | Implemented | [cash_inflow.py](../src/kinvoryx/cash_inflow.py), [test_cash_inflow.py](../tests/test_cash_inflow.py) | Synthetic-only data contract, transparent baseline, seven alternatives, shared scenario set, and acceptance-ID tests. |
+| Slice B - Validation harness | Implemented | [cash_inflow_validation.py](../src/kinvoryx/cash_inflow_validation.py), [test_cash_inflow_validation.py](../tests/test_cash_inflow_validation.py) | Golden fixtures, deterministic property sweeps, reviewer annotations, and pilot-readiness blocker semantics. |
+| Slice C - Decision-brief interface | Implemented | [cash_inflow_rendering.py](../src/kinvoryx/cash_inflow_rendering.py), [cash_inflow_interface.py](../src/kinvoryx/cash_inflow_interface.py), [test_cash_inflow_rendering.py](../tests/test_cash_inflow_rendering.py) | Household/reviewer Markdown and HTML exports plus a local synthetic manual-entry interface. |
+| Slice D - Governed pilot readiness | Not started | [Spec 011](specs/011-cash-inflow-allocation-decision-brief.md) | Next build target: governed policy config, jurisdiction coverage, audit record, privacy/security review, and human-review workflow. |
+
+Current verification evidence: `python3 -m unittest discover -s tests -v` passed 21 tests after Slice C; `python3 -m compileall -q src tests examples` and `git diff --check` also passed.
+
+## 9. Repository Memory Protocol
+
+Kinvoryx now has a repo-local memory protocol in [memory](../memory/README.md). Future work should use this protocol to retain durable lessons without storing private data.
+
+The protocol is:
+
+1. **Prime:** Read `AGENTS.md`, this handoff, `memory/manifest.yaml`, and relevant workflow lessons before substantial spec, architecture, validation, product, or interface work.
+2. **Learn:** After meaningful progress, add metadata-only lessons that capture decisions, patterns, pitfalls, validation findings, and product-boundary nuances.
+3. **Curate:** Mark stale records `stale` or `superseded`; do not silently overwrite lessons.
+4. **Guard:** Never store credentials, raw household data, private household details, account records, or PII in memory.
+5. **Trace:** Memory guides future sessions, but specs remain source truth for product behavior.
+
+Seeded memory areas:
+
+- [Platform lessons](../memory/kinvoryx_platform/lessons.md) for spec traceability, product boundary, repo workflow, and the external agentic SDK reference.
+- [Spec 011 lessons](../memory/spec_011_cash_inflow_decision_brief/lessons.md) for slice sequencing, validation, rendering, reviewer annotations, and manual-entry scope.
+
+## 10. Immediate Next Handoff Steps
 
 1. Assign accountable owners to each numbered spec.
 2. Convert Phase 0 and Phase 1 requirements into implementation tickets with requirement IDs.
-3. Create synthetic household fixtures and golden-case validation criteria before building optimizer logic.
-4. Define the first supported jurisdiction and decision-type coverage matrix.
-5. Approve pilot stop conditions before collecting real household data.
-6. Validate the cash-inflow trigger, buyer, pricing hypothesis, and decision-brief usefulness before expanding the prototype beyond synthetic cases.
+3. Review and merge the Spec 011 branch after confirming Slice A-C artifacts meet the desired product posture.
+4. Begin Spec 011 Slice D: governed pilot readiness, including versioned policy configuration, jurisdiction coverage matrix, audit record, privacy/security review, and human-review workflow.
+5. Define the first supported jurisdiction and decision-type coverage matrix before collecting real household data.
+6. Approve pilot stop conditions and reviewer roles before any controlled human pilot.
+7. Validate the cash-inflow trigger, buyer, pricing hypothesis, and decision-brief usefulness before expanding the prototype beyond synthetic cases.
+8. Continue the repository memory loop after each substantial spec slice: prime, learn, curate, and keep memory metadata-only.
