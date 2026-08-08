@@ -1,6 +1,6 @@
 # 011 Cash Inflow Allocation Decision Brief
 
-**Status:** Draft - Slices A-C implemented; Slice D next
+**Status:** Draft - Slices A-C and Slice D governance foundation implemented
 **Source:** [Household Decision Intelligence Overview](../Household%20Decision%20Intelligence%20Overview.md)
 **Primary phases:** 0-1
 **Related specs:** [001](001-product-foundation.md), [002](002-household-state-and-data-model.md), [004](004-capital-allocation-optimizer.md), [007](007-validation-and-market-research.md)
@@ -97,6 +97,13 @@ The brief presents the following for every alternative under the same assumption
 - **REQ-CIB-021 - Must:** Reject invalid manual-entry submissions with field-level errors and without producing a decision brief.
 - **REQ-CIB-022 - Must:** Show the synthetic-only, estimate-only, no-execution, and no-personalized-advice safety boundary in the household artifact, reviewer record, and manual-entry interface.
 - **REQ-CIB-023 - Should:** Export household and reviewer artifacts as Markdown and HTML from the same rendering context.
+- **REQ-CIB-024 - Must:** Wrap calculation assumptions in an identified, versioned, effective-dated policy record with an approving role and validated bounds.
+- **REQ-CIB-025 - Must:** Maintain an explicit jurisdiction and decision-type coverage record that separates supported claims, unsupported claims, sources, review status, and effective date.
+- **REQ-CIB-026 - Must:** Produce a metadata-only audit record binding case, calculation output, policy, jurisdiction, calculation version, governance version, and review state with reproducible SHA-256 fingerprints.
+- **REQ-CIB-027 - Must:** Enforce a human-review state machine that prevents direct draft approval and retains actor role, reason, event identity, and timestamp.
+- **REQ-CIB-028 - Must:** Fail the pilot-readiness gate closed unless jurisdiction coverage, privacy/security controls, deterministic validation, human approval, and annotation resolution all pass.
+- **REQ-CIB-029 - Must:** Require privacy/security review of synthetic-only handling, persistence, external transmission, secrets/PII, deletion, and open findings.
+- **REQ-CIB-030 - Must:** Audit metadata must not itself retain raw household inputs or decision-brief payloads.
 
 ## Slice B Validation Harness
 
@@ -189,6 +196,24 @@ The initial manual-entry interface may be local and dependency-free. It must:
 - Manual-entry data remains synthetic even when a user types realistic-looking numbers.
 - Rendering code must not become a second calculation engine.
 
+## Slice D Governed Pilot-Readiness Foundation
+
+Slice D introduces governance evidence without authorizing real-household use. The
+governance layer wraps, rather than replaces, the deterministic engine:
+
+- `GovernedPolicy` validates approved, effective-dated configuration and converts
+  it explicitly to the engine's `PrototypePolicy`.
+- `JurisdictionCoverage` records the exact claim boundary. The initial prototype
+  may compare post-tax cash-inflow allocations, but it does not determine tax
+  eligibility or support state-specific rules.
+- `AuditRecord` retains identifiers, versions, review state, and reproducible
+  input/output fingerprints. The raw snapshots remain outside the metadata record.
+- The human-review state machine requires draft submission before approval and
+  treats approval and rejection as terminal for that review cycle.
+- The privacy/security checklist and composite pilot gate fail closed. Every
+  control must pass; this is evidence of prototype governance, not permission to
+  collect real household data.
+
 ## Deterministic Prototype Assumptions
 
 The vertical slice uses configuration values that are visible in each result:
@@ -234,10 +259,14 @@ The output belongs to the deterministic-calculation information class. It must n
 | AC-CIB-011 | REQ-CIB-018, REQ-CIB-022 | The reviewer record includes input snapshot, validation evidence, reviewer annotations, trace IDs, and safety disclosure from the same calculation output. |
 | AC-CIB-012 | REQ-CIB-020, REQ-CIB-021 | The manual-entry interface accepts valid synthetic inputs, parses supported debt rows, and rejects invalid submissions with errors. |
 | AC-CIB-013 | REQ-CIB-023 | Markdown and HTML exports are generated from the same rendering context and preserve calculation values. |
+| AC-CIB-014 | REQ-CIB-024 | Governed configuration maps exactly to engine settings and rejects missing, out-of-range, or internally inconsistent policy values. |
+| AC-CIB-015 | REQ-CIB-025, REQ-CIB-026, REQ-CIB-030 | Coverage is explicit and audit fingerprints are stable for identical snapshots without embedding raw payloads. |
+| AC-CIB-016 | REQ-CIB-027 | Valid human-review transitions produce traceable events and invalid transitions fail closed. |
+| AC-CIB-017 | REQ-CIB-028, REQ-CIB-029 | Pilot readiness is true only when all jurisdiction, privacy/security, validation, review, and annotation gates pass. |
 
 ## Delivery Slices
 
 1. **Slice A - Deterministic core:** data contract, seven alternatives, baseline, comparison metrics, stress records, synthetic demo, and unit tests.
 2. **Slice B - Validation harness:** golden cases, deterministic property tests for cash conservation and caps, structured reviewer annotations, validation evidence records, and traceable acceptance-test names.
 3. **Slice C - Decision-brief interface:** manual-entry form, comparable alternative table, assumption disclosure, and exportable artifact.
-4. **Slice D - Governed pilot readiness:** jurisdiction coverage matrix, policy configuration, audit record, privacy/security review, and human review workflow.
+4. **Slice D - Governed pilot readiness (foundation implemented):** jurisdiction coverage matrix, policy configuration, audit record, privacy/security review, and human review workflow. Real-household use remains blocked pending accountable owner review and pilot authorization.
