@@ -30,6 +30,7 @@ This directory is the numbered spec home for the Household Decision Intelligence
 | [009 Monitoring Alerts and Outcomes](009-monitoring-alerts-and-outcomes.md) | Plan drift, alerts, outcome measurement, lifecycle states | 2-3 | Draft |
 | [010 Extension Portfolio](010-extension-portfolio.md) | Adjacent financial modules, cross-domain modules, extension admission gates | 4-6 | Draft |
 | [011 Cash Inflow Allocation Decision Brief](011-cash-inflow-allocation-decision-brief.md) | Synthetic cash-inflow alternatives, comparable trade-offs, stress records, and governance controls | 0-1 | Draft - Slices A-D foundation implemented |
+| [012 Governed Decision-Brief Workflow](012-governed-decision-brief-workflow.md) | Case-bound calculation, validation, review, privacy, audit, coverage, and pilot-gate evidence | 1 | Draft - initial vertical slice implemented |
 
 ## Traceability Rule
 

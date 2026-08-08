@@ -356,6 +356,51 @@ def validate_golden_case(
     )
 
 
+def validate_decision_brief(
+    household: HouseholdCase,
+    brief: DecisionBrief,
+    annotations: Iterable[ReviewerAnnotation] = (),
+    policy: PrototypePolicy = PrototypePolicy(),
+    *,
+    evidence_id: str = "governed-decision-brief",
+) -> ValidationEvidence:
+    """Validate a retained brief without creating a second calculation output."""
+    retained_annotations = tuple(annotations)
+    fixture = GoldenCaseFixture(
+        fixture_id=evidence_id,
+        purpose="Validate one governed decision brief against deterministic invariants.",
+        household=household,
+        reviewer_annotations=retained_annotations,
+    )
+    issues = list(_brief_invariant_issues(fixture, brief, policy))
+    if brief.case_id != household.case_id:
+        issues.append(
+            _issue(
+                fixture,
+                "case_mismatch",
+                "decision brief case_id must match the household case_id",
+                ("REQ-GDB-002", "AC-GDB-002"),
+            )
+        )
+    issues.extend(
+        validate_reviewer_annotations(
+            retained_annotations,
+            valid_case_ids=(household.case_id,),
+            valid_strategies=_strategy_ids(brief),
+        )
+    )
+    blockers = unresolved_pilot_blockers(retained_annotations)
+    return ValidationEvidence(
+        fixture_id=evidence_id,
+        case_id=household.case_id,
+        passed=not issues,
+        pilot_ready=not issues and not blockers,
+        issues=tuple(issues),
+        blocker_annotations=blockers,
+        brief=brief,
+    )
+
+
 def validate_all_golden_cases(
     fixtures: Iterable[GoldenCaseFixture] | None = None,
     policy: PrototypePolicy = PrototypePolicy(),

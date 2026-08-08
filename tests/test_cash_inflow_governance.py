@@ -15,6 +15,7 @@ from kinvoryx.cash_inflow_governance import (
     JurisdictionCoverage,
     PrivacySecurityReview,
     ReviewState,
+    create_governed_decision_brief,
     create_audit_record,
     evaluate_pilot_gate,
     transition_review,
@@ -82,21 +83,48 @@ class CashInflowGovernanceTests(unittest.TestCase):
                 occurred_at="2026-08-08T01:00:00Z",
             )
 
-    def test_ac_cib_017_pilot_gate_requires_all_governance_evidence(self) -> None:
-        ready = evaluate_pilot_gate(
-            coverage=self.coverage, privacy_review=self.privacy,
-            review_state=ReviewState.APPROVED, validation_passed=True,
-            unresolved_annotation_count=0,
+    def _approved_review_events(self):
+        submitted = transition_review(
+            ReviewState.DRAFT, ReviewState.SUBMITTED,
+            event_id="review-submit", actor_role="analyst", reason="ready for review",
+            occurred_at="2026-08-08T01:00:00Z",
         )
-        self.assertTrue(ready.ready)
-        blocked = evaluate_pilot_gate(
-            coverage=replace(self.coverage, status="prototype"),
-            privacy_review=replace(self.privacy, open_findings=("retention review",)),
-            review_state=ReviewState.SUBMITTED, validation_passed=False,
-            unresolved_annotation_count=1,
+        approved = transition_review(
+            ReviewState.SUBMITTED, ReviewState.APPROVED,
+            event_id="review-approve", actor_role="risk-reviewer", reason="evidence accepted",
+            occurred_at="2026-08-08T02:00:00Z",
         )
-        self.assertFalse(blocked.ready)
-        self.assertEqual(len(blocked.blockers), 5)
+        return submitted, approved
+
+    def test_ac_gdb_001_pilot_gate_is_derived_from_case_bound_evidence(self) -> None:
+        result = create_governed_decision_brief(
+            self.household, self.policy, self.coverage,
+            annotations=(), privacy_review=self.privacy,
+            review_events=self._approved_review_events(),
+            workflow_id="workflow-001", audit_id="audit-001",
+            created_at="2026-08-08T03:00:00Z",
+        )
+        self.assertTrue(result.pilot_gate.ready)
+        self.assertEqual(result.evidence.household.case_id, result.evidence.validation.case_id)
+        self.assertEqual(result.evidence.brief, result.evidence.validation.brief)
+        self.assertEqual(result.evidence.audit.review_state, ReviewState.APPROVED)
+
+    def test_ac_gdb_002_gate_rejects_tampered_or_cross_workflow_evidence(self) -> None:
+        result = create_governed_decision_brief(
+            self.household, self.policy, self.coverage,
+            annotations=(), privacy_review=self.privacy,
+            review_events=self._approved_review_events(),
+            workflow_id="workflow-002", audit_id="audit-002",
+            created_at="2026-08-08T03:00:00Z",
+        )
+        tampered = replace(
+            result.evidence,
+            coverage=replace(self.coverage, jurisdiction="US-OTHER"),
+        )
+        gate = evaluate_pilot_gate(tampered)
+        self.assertFalse(gate.ready)
+        self.assertIn("audit record belongs to different jurisdiction coverage", gate.blockers)
+        self.assertIn("audit coverage fingerprint does not match retained evidence", gate.blockers)
 
 
 if __name__ == "__main__":

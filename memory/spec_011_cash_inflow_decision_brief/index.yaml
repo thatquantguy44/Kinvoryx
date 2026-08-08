@@ -92,3 +92,18 @@ records:
     status: active
     access_level: repo
     pit_scope: "2026-08-08"
+  - id: MEM-S011-20260808-008
+    scope: governed_workflow_lineage
+    type: decision
+    statement: "Pilot readiness must derive from one case-bound evidence graph; audit fingerprints bind each evidence node and replace caller-supplied summary booleans and counts."
+    evidence:
+      - docs/specs/012-governed-decision-brief-workflow.md
+      - src/kinvoryx/cash_inflow_governance.py
+      - tests/test_cash_inflow_governance.py
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
