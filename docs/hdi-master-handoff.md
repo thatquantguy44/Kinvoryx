@@ -33,6 +33,7 @@ The numbered specs below are the canonical implementation handoff units. New spe
 | [009 Monitoring Alerts and Outcomes](specs/009-monitoring-alerts-and-outcomes.md) | Drift detection, alert lifecycle, observed outcomes, plan updates | 6A, 8, 16, 18-19 | Product, Engineering, Support |
 | [010 Extension Portfolio](specs/010-extension-portfolio.md) | Adjacent financial and cross-domain modules with admission gates | 14-16, 21, 24-25 | Product Strategy, Research |
 | [011 Cash Inflow Allocation Decision Brief](specs/011-cash-inflow-allocation-decision-brief.md) | Synthetic decision brief for competing uses of a discrete cash inflow | 8, 18-20, 25 | Product, Optimization, Research |
+| [012 Governed Decision-Brief Workflow](specs/012-governed-decision-brief-workflow.md) | End-to-end, case-bound governance evidence and pilot-gate evaluation | 6B, 9, 11A, 21, 25 | Platform, Model Risk, Privacy, Security |
 
 ## 3. Product Boundary
 
@@ -89,6 +90,7 @@ The numbered specs below are the canonical implementation handoff units. New spe
 | FEAT-014 | Market validation and TAM model | 0-3 | [007](specs/007-validation-and-market-research.md) | GATE-M1-M5, AC-010-011 |
 | FEAT-015 | Extension admission and sequencing | 4-6 | [010](specs/010-extension-portfolio.md) | REQ-EXT-001-007 |
 | FEAT-016 | Cash-inflow allocation decision brief | 0-1 | [011](specs/011-cash-inflow-allocation-decision-brief.md) | REQ-CIB-001-023, AC-CIB-001-013 |
+| FEAT-017 | Governed decision-brief workflow | 1 | [012](specs/012-governed-decision-brief-workflow.md) | REQ-GDB-001-006, AC-GDB-001-004 |
 
 ## 6. Cross-Cutting Architectural Contracts
 
@@ -122,6 +124,7 @@ As of August 8, 2026, Spec 011 has progressed through the first three vertical s
 | Slice B - Validation harness | Implemented | [cash_inflow_validation.py](../src/kinvoryx/cash_inflow_validation.py), [test_cash_inflow_validation.py](../tests/test_cash_inflow_validation.py) | Golden fixtures, deterministic property sweeps, reviewer annotations, and pilot-readiness blocker semantics. |
 | Slice C - Decision-brief interface | Implemented | [cash_inflow_rendering.py](../src/kinvoryx/cash_inflow_rendering.py), [cash_inflow_interface.py](../src/kinvoryx/cash_inflow_interface.py), [test_cash_inflow_rendering.py](../tests/test_cash_inflow_rendering.py) | Household/reviewer Markdown and HTML exports plus a local synthetic manual-entry interface. |
 | Slice D - Governed pilot readiness | Foundation implemented | [cash_inflow_governance.py](../src/kinvoryx/cash_inflow_governance.py), [test_cash_inflow_governance.py](../tests/test_cash_inflow_governance.py) | Versioned policy, explicit coverage, metadata-only audit fingerprints, privacy/security checklist, human-review state machine, and fail-closed composite gate. Accountable approval and real-household use remain out of scope. |
+| Governed end-to-end workflow | Initial vertical slice implemented | [Spec 012](specs/012-governed-decision-brief-workflow.md), [cash_inflow_governance.py](../src/kinvoryx/cash_inflow_governance.py) | One service now binds the case, policy, coverage, calculation, validation, annotations, privacy/security review, review events, audit fingerprints, and evidence-derived pilot gate. |
 
 Current verification evidence is recorded by each committed slice. Slice D adds acceptance tests `AC-CIB-014` through `AC-CIB-017`; rerun the full unit-test, compile, and diff checks before relying on the current branch.
 

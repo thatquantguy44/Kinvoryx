@@ -8,9 +8,20 @@ from decimal import Decimal
 from enum import Enum
 import hashlib
 import json
-from typing import Any
+from typing import Any, Iterable
 
-from kinvoryx.cash_inflow import DecisionBrief, HouseholdCase, PrototypePolicy
+from kinvoryx.cash_inflow import (
+    DecisionBrief,
+    HouseholdCase,
+    PrototypePolicy,
+    build_decision_brief,
+)
+from kinvoryx.cash_inflow_validation import (
+    ReviewerAnnotation,
+    ValidationEvidence,
+    unresolved_pilot_blockers,
+    validate_decision_brief,
+)
 
 
 GOVERNANCE_VERSION = "cib-governance-1.0.0"
@@ -178,6 +189,12 @@ class AuditRecord:
     jurisdiction: str
     input_sha256: str
     output_sha256: str
+    validation_sha256: str | None
+    annotations_sha256: str | None
+    privacy_review_sha256: str | None
+    review_events_sha256: str | None
+    coverage_sha256: str | None
+    policy_sha256: str | None
     review_state: ReviewState
 
 
@@ -188,6 +205,8 @@ def _json_value(value: Any) -> Any:
         return {str(key): _json_value(item) for key, item in sorted(value.items())}
     if isinstance(value, (tuple, list)):
         return [_json_value(item) for item in value]
+    if isinstance(value, (set, frozenset)):
+        return sorted(_json_value(item) for item in value)
     if isinstance(value, (Decimal, Enum)):
         return str(value.value if isinstance(value, Enum) else value)
     return value
@@ -208,6 +227,10 @@ def create_audit_record(
     created_at: str | None = None,
     calculation_version: str = "cib-core-1.0.0",
     review_state: ReviewState = ReviewState.DRAFT,
+    validation: ValidationEvidence | None = None,
+    annotations: tuple[ReviewerAnnotation, ...] | None = None,
+    privacy_review: PrivacySecurityReview | None = None,
+    review_events: tuple[ReviewEvent, ...] | None = None,
 ) -> AuditRecord:
     """Create a tamper-evident metadata record without retaining raw case data."""
     if household.case_id != brief.case_id:
@@ -225,6 +248,12 @@ def create_audit_record(
         jurisdiction=coverage.jurisdiction,
         input_sha256=_sha256(household),
         output_sha256=_sha256(brief),
+        validation_sha256=_sha256(validation) if validation is not None else None,
+        annotations_sha256=_sha256(annotations) if annotations is not None else None,
+        privacy_review_sha256=_sha256(privacy_review) if privacy_review is not None else None,
+        review_events_sha256=_sha256(review_events) if review_events is not None else None,
+        coverage_sha256=_sha256(coverage),
+        policy_sha256=_sha256(policy),
         review_state=review_state,
     )
 
@@ -235,24 +264,142 @@ class PilotGateResult:
     blockers: tuple[str, ...]
 
 
-def evaluate_pilot_gate(
-    *,
-    coverage: JurisdictionCoverage,
-    privacy_review: PrivacySecurityReview,
-    review_state: ReviewState,
-    validation_passed: bool,
-    unresolved_annotation_count: int,
-) -> PilotGateResult:
-    """Combine Slice D evidence; every unmet control fails closed."""
+@dataclass(frozen=True)
+class GovernedWorkflowEvidence:
+    """One immutable evidence graph for a case and its calculation."""
+
+    workflow_id: str
+    household: HouseholdCase
+    policy: GovernedPolicy
+    coverage: JurisdictionCoverage
+    brief: DecisionBrief
+    validation: ValidationEvidence
+    annotations: tuple[ReviewerAnnotation, ...]
+    privacy_review: PrivacySecurityReview
+    review_events: tuple[ReviewEvent, ...]
+    audit: AuditRecord
+
+
+@dataclass(frozen=True)
+class GovernedDecisionBrief:
+    """Completed governed workflow and its evidence-derived pilot gate."""
+
+    evidence: GovernedWorkflowEvidence
+    pilot_gate: PilotGateResult
+
+
+def _review_state(events: tuple[ReviewEvent, ...]) -> tuple[ReviewState, list[str]]:
     blockers: list[str] = []
-    if coverage.status != "reviewed":
+    current = ReviewState.DRAFT
+    seen_ids: set[str] = set()
+    for event in events:
+        if event.event_id in seen_ids:
+            blockers.append("review event identifiers are not unique")
+        seen_ids.add(event.event_id)
+        if event.from_state != current or event.to_state not in _TRANSITIONS[current]:
+            blockers.append("review event chain is invalid")
+            break
+        current = event.to_state
+    return current, blockers
+
+
+def evaluate_pilot_gate(evidence: GovernedWorkflowEvidence) -> PilotGateResult:
+    """Evaluate retained evidence, never caller-supplied readiness summaries."""
+    blockers: list[str] = []
+    if evidence.coverage.status != "reviewed":
         blockers.append("jurisdiction coverage is not reviewed")
-    if not privacy_review.passed:
+    if evidence.coverage.decision_type != "post-tax-cash-inflow-comparison":
+        blockers.append("jurisdiction coverage does not support this decision type")
+    if not evidence.privacy_review.passed:
         blockers.append("privacy/security review is incomplete")
+    review_state, review_blockers = _review_state(evidence.review_events)
+    blockers.extend(review_blockers)
     if review_state != ReviewState.APPROVED:
         blockers.append("human review is not approved")
-    if not validation_passed:
+    if evidence.validation.case_id != evidence.household.case_id:
+        blockers.append("validation evidence belongs to a different case")
+    if evidence.validation.brief != evidence.brief:
+        blockers.append("validation evidence belongs to a different calculation")
+    if not evidence.validation.passed:
         blockers.append("deterministic validation did not pass")
-    if unresolved_annotation_count:
+    if evidence.validation.blocker_annotations != unresolved_pilot_blockers(evidence.annotations):
+        blockers.append("validation annotation evidence does not match retained annotations")
+    if unresolved_pilot_blockers(evidence.annotations):
         blockers.append("unresolved high-severity reviewer annotations remain")
+    audit = evidence.audit
+    expected_hashes = {
+        "input": (audit.input_sha256, _sha256(evidence.household)),
+        "output": (audit.output_sha256, _sha256(evidence.brief)),
+        "validation": (audit.validation_sha256, _sha256(evidence.validation)),
+        "annotations": (audit.annotations_sha256, _sha256(evidence.annotations)),
+        "privacy review": (audit.privacy_review_sha256, _sha256(evidence.privacy_review)),
+        "review events": (audit.review_events_sha256, _sha256(evidence.review_events)),
+        "coverage": (audit.coverage_sha256, _sha256(evidence.coverage)),
+        "policy": (audit.policy_sha256, _sha256(evidence.policy)),
+    }
+    if audit.case_id != evidence.household.case_id:
+        blockers.append("audit record belongs to a different case")
+    if (audit.policy_id, audit.policy_version) != (evidence.policy.policy_id, evidence.policy.version):
+        blockers.append("audit record belongs to a different policy")
+    if audit.jurisdiction != evidence.coverage.jurisdiction:
+        blockers.append("audit record belongs to different jurisdiction coverage")
+    if audit.review_state != review_state:
+        blockers.append("audit review state does not match review events")
+    for label, (actual, expected) in expected_hashes.items():
+        if actual != expected:
+            blockers.append(f"audit {label} fingerprint does not match retained evidence")
     return PilotGateResult(ready=not blockers, blockers=tuple(blockers))
+
+
+def create_governed_decision_brief(
+    household: HouseholdCase,
+    policy: GovernedPolicy,
+    coverage: JurisdictionCoverage,
+    *,
+    annotations: Iterable[ReviewerAnnotation],
+    privacy_review: PrivacySecurityReview,
+    review_events: Iterable[ReviewEvent],
+    workflow_id: str,
+    audit_id: str,
+    created_at: str | None = None,
+) -> GovernedDecisionBrief:
+    """Run calculation through one case-bound governance and gate workflow."""
+    if not workflow_id.strip():
+        raise ValueError("workflow_id is required")
+    retained_annotations = tuple(annotations)
+    retained_events = tuple(review_events)
+    brief = build_decision_brief(household, policy.engine_policy())
+    validation = validate_decision_brief(
+        household,
+        brief,
+        retained_annotations,
+        policy.engine_policy(),
+        evidence_id=f"{workflow_id}:validation",
+    )
+    final_review_state, _ = _review_state(retained_events)
+    audit = create_audit_record(
+        household,
+        brief,
+        policy,
+        coverage,
+        audit_id=audit_id,
+        created_at=created_at,
+        review_state=final_review_state,
+        validation=validation,
+        annotations=retained_annotations,
+        privacy_review=privacy_review,
+        review_events=retained_events,
+    )
+    evidence = GovernedWorkflowEvidence(
+        workflow_id=workflow_id,
+        household=household,
+        policy=policy,
+        coverage=coverage,
+        brief=brief,
+        validation=validation,
+        annotations=retained_annotations,
+        privacy_review=privacy_review,
+        review_events=retained_events,
+        audit=audit,
+    )
+    return GovernedDecisionBrief(evidence=evidence, pilot_gate=evaluate_pilot_gate(evidence))

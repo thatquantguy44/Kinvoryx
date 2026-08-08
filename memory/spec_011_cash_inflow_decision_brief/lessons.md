@@ -86,3 +86,17 @@ Pilot readiness is a conjunction, not a score. Reviewed jurisdiction coverage,
 privacy/security controls, deterministic validation, human approval, and resolved
 high-severity annotations must all pass. Audit records retain hashes and metadata,
 not a second copy of raw case data.
+
+## MEM-S011-20260808-008 - Gate The Evidence Graph, Not Summaries
+
+- **Scope:** governed workflow lineage
+- **Type:** decision
+- **Status:** active
+- **Confidence:** high
+- **Evidence:** `docs/specs/012-governed-decision-brief-workflow.md`, `src/kinvoryx/cash_inflow_governance.py`, `tests/test_cash_inflow_governance.py`
+
+Pilot readiness must be derived from one retained, case-bound evidence graph.
+Boolean validation flags, annotation counts, and asserted review states lose
+lineage and permit evidence from different calculations to be mixed. Fingerprint
+each evidence node in the metadata-only audit record and recheck those bindings at
+the gate.
