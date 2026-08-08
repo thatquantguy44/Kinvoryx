@@ -32,6 +32,7 @@ The numbered specs below are the canonical implementation handoff units. New spe
 | [008 Professional Enterprise Workflows](specs/008-professional-enterprise-workflows.md) | Adviser/CPA/employer/CIO governance, review, approvals, operating metrics | 1, 6, 6A, 17, 22 | Enterprise Product, Compliance |
 | [009 Monitoring Alerts and Outcomes](specs/009-monitoring-alerts-and-outcomes.md) | Drift detection, alert lifecycle, observed outcomes, plan updates | 6A, 8, 16, 18-19 | Product, Engineering, Support |
 | [010 Extension Portfolio](specs/010-extension-portfolio.md) | Adjacent financial and cross-domain modules with admission gates | 14-16, 21, 24-25 | Product Strategy, Research |
+| [011 Cash Inflow Allocation Decision Brief](specs/011-cash-inflow-allocation-decision-brief.md) | Synthetic decision brief for competing uses of a discrete cash inflow | 8, 18-20, 25 | Product, Optimization, Research |
 
 ## 3. Product Boundary
 
@@ -87,6 +88,7 @@ The numbered specs below are the canonical implementation handoff units. New spe
 | FEAT-013 | Organization policy, assumption, and audit governance | 3 | [008](specs/008-professional-enterprise-workflows.md) | REQ-LAB-050-064 |
 | FEAT-014 | Market validation and TAM model | 0-3 | [007](specs/007-validation-and-market-research.md) | GATE-M1-M5, AC-010-011 |
 | FEAT-015 | Extension admission and sequencing | 4-6 | [010](specs/010-extension-portfolio.md) | REQ-EXT-001-007 |
+| FEAT-016 | Cash-inflow allocation decision brief | 0-1 | [011](specs/011-cash-inflow-allocation-decision-brief.md) | REQ-CIB-001-010, REQ-020-045 |
 
 ## 6. Cross-Cutting Architectural Contracts
 
@@ -117,4 +119,4 @@ The program is ready to move from specification to design when:
 3. Create synthetic household fixtures and golden-case validation criteria before building optimizer logic.
 4. Define the first supported jurisdiction and decision-type coverage matrix.
 5. Approve pilot stop conditions before collecting real household data.
-
+6. Validate the cash-inflow trigger, buyer, pricing hypothesis, and decision-brief usefulness before expanding the prototype beyond synthetic cases.

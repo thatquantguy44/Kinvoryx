@@ -29,6 +29,7 @@ This directory is the numbered spec home for the Household Decision Intelligence
 | [008 Professional Enterprise Workflows](008-professional-enterprise-workflows.md) | Adviser, CPA, employer, CIO, approvals, org policy, operating metrics | 2-3 | Draft |
 | [009 Monitoring Alerts and Outcomes](009-monitoring-alerts-and-outcomes.md) | Plan drift, alerts, outcome measurement, lifecycle states | 2-3 | Draft |
 | [010 Extension Portfolio](010-extension-portfolio.md) | Adjacent financial modules, cross-domain modules, extension admission gates | 4-6 | Draft |
+| [011 Cash Inflow Allocation Decision Brief](011-cash-inflow-allocation-decision-brief.md) | Synthetic cash-inflow alternatives, comparable trade-offs, and stress records | 0-1 | Draft - vertical slice in progress |
 
 ## Traceability Rule
 
@@ -38,4 +39,3 @@ Every implementation ticket should cite:
 2. One or more requirement IDs.
 3. The phase or gate it supports.
 4. Its acceptance or verification method.
-

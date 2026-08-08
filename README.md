@@ -1,3 +1,11 @@
-# Quant Sandbox/platforms/OptiKin
+# Kinvoryx
 
-Platform or infrastructure repository skeleton.
+Spec-driven prototype for Household Decision Intelligence, beginning with the Household Capital Allocation Optimizer.
+
+The first vertical slice is the synthetic-only Cash Inflow Allocation Decision Brief in [Spec 011](docs/specs/011-cash-inflow-allocation-decision-brief.md). It compares seven transparent allocation alternatives for a discrete inflow; it does not execute actions or provide personalized financial advice.
+
+Run the synthetic demonstration with:
+
+```sh
+python3 examples/demo/cash_inflow_decision_brief.py
+```
