@@ -15,3 +15,15 @@ Run the deterministic validation harness and unit tests with:
 ```sh
 python3 -m unittest discover -s tests -v
 ```
+
+Preview the household and reviewer export artifacts with:
+
+```sh
+python3 examples/demo/cash_inflow_decision_brief_export.py
+```
+
+Run the local synthetic manual-entry interface with:
+
+```sh
+python3 examples/demo/cash_inflow_decision_brief_interface.py
+```

@@ -90,6 +90,13 @@ The brief presents the following for every alternative under the same assumption
 - **REQ-CIB-014 - Must:** Store reviewer annotations as structured records with reviewer role, target case, target strategy when applicable, category, severity, trace IDs, note, and disposition.
 - **REQ-CIB-015 - Must:** Reject malformed reviewer annotations and treat unresolved high-severity annotations as blockers for pilot readiness, not as calculation failures.
 - **REQ-CIB-016 - Should:** Report validation results as evidence for reviewer and product learning without representing the harness as proof of personalized financial-advice quality.
+- **REQ-CIB-017 - Must:** Render a household-readable artifact from the retained `DecisionBrief` without adding, removing, or recalculating allocation values.
+- **REQ-CIB-018 - Must:** Render a reviewer-readable record from the same `DecisionBrief`, including the input snapshot, assumptions, validation evidence, reviewer annotations, and trace IDs.
+- **REQ-CIB-019 - Must:** Present alternatives in a comparable table with common metrics and no selected winner, ranking, or single-plan call to action.
+- **REQ-CIB-020 - Must:** Provide a synthetic manual-entry interface for the required decision-contract inputs, including supported debt rows.
+- **REQ-CIB-021 - Must:** Reject invalid manual-entry submissions with field-level errors and without producing a decision brief.
+- **REQ-CIB-022 - Must:** Show the synthetic-only, estimate-only, no-execution, and no-personalized-advice safety boundary in the household artifact, reviewer record, and manual-entry interface.
+- **REQ-CIB-023 - Should:** Export household and reviewer artifacts as Markdown and HTML from the same rendering context.
 
 ## Slice B Validation Harness
 
@@ -137,6 +144,51 @@ Open `high` or `blocker` annotations block pilot readiness. They do not make the
 - Reviewer annotations should capture why a human reviewer trusts, questions, or rejects a brief, while preserving the deterministic output unchanged.
 - The first harness uses in-repo synthetic fixtures. Real data, account exports, or private household details remain out of scope.
 
+## Slice C Decision-Brief Interface
+
+Slice C packages the deterministic output for review and demonstration. It still accepts synthetic manually entered data only and must preserve the same comparison-first posture.
+
+### Household Artifact
+
+The household-readable artifact must include:
+
+- Case identifier and generated calculation boundary.
+- Plain-language safety disclosure.
+- The transparent baseline and seven alternatives.
+- A comparable allocation and metric table.
+- Assumptions and scenario summaries.
+- Trade-off statements for each alternative.
+
+It must not label any alternative as recommended, optimal, best, or selected.
+
+### Reviewer Record
+
+The reviewer-readable record must include everything in the household artifact plus:
+
+- Full input snapshot and supported debt rows.
+- Validation status, pilot-readiness status, validation issues, and blocker annotations when supplied.
+- Reviewer annotations with role, category, severity, disposition, strategy, note, and trace IDs.
+- Spec trace IDs for the rendering requirements.
+
+Reviewer records are evidence packages for product/risk review. They are not household-facing advice letters.
+
+### Manual-Entry Interface
+
+The initial manual-entry interface may be local and dependency-free. It must:
+
+- Capture required fields for one synthetic household case.
+- Accept supported debts as explicit rows or a documented row format.
+- Return field-level errors for invalid values.
+- Generate the household and reviewer views from the deterministic engine when valid.
+- Keep the safety boundary visible before and after submission.
+
+### Interface Decisions and Nuances
+
+- Markdown and HTML exports are both useful: Markdown is reviewable in git; HTML is easier for product demos.
+- The interface should optimize comparison and traceability over visual flourish.
+- Manual-entry data remains synthetic even when a user types realistic-looking numbers.
+- Rendering code must not become a second calculation engine.
+
 ## Deterministic Prototype Assumptions
 
 The vertical slice uses configuration values that are visible in each result:
@@ -178,6 +230,10 @@ The output belongs to the deterministic-calculation information class. It must n
 | AC-CIB-007 | REQ-CIB-013 | Deterministic property sweeps verify cash conservation, category caps, debt caps, and scenario coverage across synthetic edge cases. |
 | AC-CIB-008 | REQ-CIB-014, REQ-CIB-015 | Reviewer annotations validate required fields, trace IDs, target references, and pilot-readiness blocker status. |
 | AC-CIB-009 | REQ-CIB-007, REQ-CIB-016 | Validation output is labeled as synthetic evidence and is not represented as financial-advice quality proof. |
+| AC-CIB-010 | REQ-CIB-017, REQ-CIB-019, REQ-CIB-022 | The household artifact includes the baseline, all seven alternatives, common metrics, assumptions, scenario summaries, and safety disclosure without selecting a winner. |
+| AC-CIB-011 | REQ-CIB-018, REQ-CIB-022 | The reviewer record includes input snapshot, validation evidence, reviewer annotations, trace IDs, and safety disclosure from the same calculation output. |
+| AC-CIB-012 | REQ-CIB-020, REQ-CIB-021 | The manual-entry interface accepts valid synthetic inputs, parses supported debt rows, and rejects invalid submissions with errors. |
+| AC-CIB-013 | REQ-CIB-023 | Markdown and HTML exports are generated from the same rendering context and preserve calculation values. |
 
 ## Delivery Slices
 
