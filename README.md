@@ -9,3 +9,9 @@ Run the synthetic demonstration with:
 ```sh
 python3 examples/demo/cash_inflow_decision_brief.py
 ```
+
+Run the deterministic validation harness and unit tests with:
+
+```sh
+python3 -m unittest discover -s tests -v
+```

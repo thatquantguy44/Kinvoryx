@@ -116,7 +116,7 @@ The program is ready to move from specification to design when:
 
 1. Assign accountable owners to each numbered spec.
 2. Convert Phase 0 and Phase 1 requirements into implementation tickets with requirement IDs.
-3. Create synthetic household fixtures and golden-case validation criteria before building optimizer logic.
+3. Keep Spec 011's synthetic golden-case validation harness passing before building the decision-brief interface, export artifact, or pilot-readiness workflows.
 4. Define the first supported jurisdiction and decision-type coverage matrix.
 5. Approve pilot stop conditions before collecting real household data.
 6. Validate the cash-inflow trigger, buyer, pricing hypothesis, and decision-brief usefulness before expanding the prototype beyond synthetic cases.
