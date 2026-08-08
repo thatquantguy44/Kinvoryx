@@ -73,3 +73,16 @@ The local manual-entry interface is useful for demos because it has no extra
 runtime dependencies and keeps the safety boundary visible. Do not add real data,
 account connectivity, persistence, or production submission workflows until Slice
 D defines governance, privacy, audit, and human review.
+
+## MEM-S011-20260808-007 - Governance Evidence Must Fail Closed
+
+- **Scope:** governed pilot readiness
+- **Type:** decision
+- **Status:** active
+- **Confidence:** high
+- **Evidence:** `src/kinvoryx/cash_inflow_governance.py`, `tests/test_cash_inflow_governance.py`, Spec 011
+
+Pilot readiness is a conjunction, not a score. Reviewed jurisdiction coverage,
+privacy/security controls, deterministic validation, human approval, and resolved
+high-severity annotations must all pass. Audit records retain hashes and metadata,
+not a second copy of raw case data.

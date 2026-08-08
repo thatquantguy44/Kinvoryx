@@ -121,9 +121,9 @@ As of August 8, 2026, Spec 011 has progressed through the first three vertical s
 | Slice A - Deterministic core | Implemented | [cash_inflow.py](../src/kinvoryx/cash_inflow.py), [test_cash_inflow.py](../tests/test_cash_inflow.py) | Synthetic-only data contract, transparent baseline, seven alternatives, shared scenario set, and acceptance-ID tests. |
 | Slice B - Validation harness | Implemented | [cash_inflow_validation.py](../src/kinvoryx/cash_inflow_validation.py), [test_cash_inflow_validation.py](../tests/test_cash_inflow_validation.py) | Golden fixtures, deterministic property sweeps, reviewer annotations, and pilot-readiness blocker semantics. |
 | Slice C - Decision-brief interface | Implemented | [cash_inflow_rendering.py](../src/kinvoryx/cash_inflow_rendering.py), [cash_inflow_interface.py](../src/kinvoryx/cash_inflow_interface.py), [test_cash_inflow_rendering.py](../tests/test_cash_inflow_rendering.py) | Household/reviewer Markdown and HTML exports plus a local synthetic manual-entry interface. |
-| Slice D - Governed pilot readiness | Not started | [Spec 011](specs/011-cash-inflow-allocation-decision-brief.md) | Next build target: governed policy config, jurisdiction coverage, audit record, privacy/security review, and human-review workflow. |
+| Slice D - Governed pilot readiness | Foundation implemented | [cash_inflow_governance.py](../src/kinvoryx/cash_inflow_governance.py), [test_cash_inflow_governance.py](../tests/test_cash_inflow_governance.py) | Versioned policy, explicit coverage, metadata-only audit fingerprints, privacy/security checklist, human-review state machine, and fail-closed composite gate. Accountable approval and real-household use remain out of scope. |
 
-Current verification evidence: `python3 -m unittest discover -s tests -v` passed 21 tests after Slice C; `python3 -m compileall -q src tests examples` and `git diff --check` also passed.
+Current verification evidence is recorded by each committed slice. Slice D adds acceptance tests `AC-CIB-014` through `AC-CIB-017`; rerun the full unit-test, compile, and diff checks before relying on the current branch.
 
 ## 9. Repository Memory Protocol
 
@@ -147,8 +147,8 @@ Seeded memory areas:
 1. Assign accountable owners to each numbered spec.
 2. Convert Phase 0 and Phase 1 requirements into implementation tickets with requirement IDs.
 3. Review and merge the Spec 011 branch after confirming Slice A-C artifacts meet the desired product posture.
-4. Begin Spec 011 Slice D: governed pilot readiness, including versioned policy configuration, jurisdiction coverage matrix, audit record, privacy/security review, and human-review workflow.
-5. Define the first supported jurisdiction and decision-type coverage matrix before collecting real household data.
-6. Approve pilot stop conditions and reviewer roles before any controlled human pilot.
+4. Assign accountable domain, risk, privacy/security, and compliance owners to review the Slice D governance foundation.
+5. Replace the prototype coverage example with an owner-approved first jurisdiction and decision-type coverage matrix before collecting real household data.
+6. Approve pilot stop conditions, reviewer roles, retention controls, and an operational audit store before any controlled human pilot.
 7. Validate the cash-inflow trigger, buyer, pricing hypothesis, and decision-brief usefulness before expanding the prototype beyond synthetic cases.
 8. Continue the repository memory loop after each substantial spec slice: prime, learn, curate, and keep memory metadata-only.

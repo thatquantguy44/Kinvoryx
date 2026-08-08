@@ -77,3 +77,18 @@ records:
     status: active
     access_level: repo
     pit_scope: "2026-08-08"
+  - id: MEM-S011-20260808-007
+    scope: governed_pilot_readiness
+    type: decision
+    statement: "Pilot readiness fails closed unless coverage, privacy/security, validation, human approval, and annotation gates all pass; audit records retain metadata and hashes rather than raw case payloads."
+    evidence:
+      - src/kinvoryx/cash_inflow_governance.py
+      - tests/test_cash_inflow_governance.py
+      - docs/specs/011-cash-inflow-allocation-decision-brief.md
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-08-08"
+    last_confirmed: "2026-08-08"
+    status: active
+    access_level: repo
+    pit_scope: "2026-08-08"
