@@ -232,8 +232,51 @@ def _demo_household() -> HouseholdState:
     )
 
 
+def _local_ip() -> str:
+    import socket
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        try:
+            s.connect(("8.8.8.8", 80))
+            return s.getsockname()[0]
+        except Exception:
+            return "localhost"
+
+
+def _serve(html: str, port: int = 8080) -> None:
+    import http.server
+    import socketserver
+
+    html_bytes = html.encode("utf-8")
+
+    class _Handler(http.server.BaseHTTPRequestHandler):
+        def do_GET(self) -> None:
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(html_bytes)))
+            self.end_headers()
+            self.wfile.write(html_bytes)
+
+        def log_message(self, fmt: str, *args: object) -> None:
+            pass  # suppress per-request logs
+
+    ip = _local_ip()
+    print(f"Open in Mobile Safari → http://{ip}:{port}/")
+    print("Ctrl-C to stop.\n")
+    with socketserver.TCPServer(("", port), _Handler) as httpd:
+        httpd.allow_reuse_address = True
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("Stopped.")
+
+
 def main() -> None:
     save = "--save" in sys.argv
+    serve = "--serve" in sys.argv
+    port = 8080
+    if "--port" in sys.argv:
+        idx = sys.argv.index("--port")
+        port = int(sys.argv[idx + 1])
 
     household = _demo_household()
     rules = federal_rules_2024()
@@ -246,7 +289,9 @@ def main() -> None:
     rv_html = render_reviewer_html(ctx)
     combined_html = render_combined_html(ctx)
 
-    if save:
+    if serve:
+        _serve(combined_html, port=port)
+    elif save:
         out = Path(__file__).parent / "out"
         out.mkdir(exist_ok=True)
         (out / "optimizer_household.md").write_text(hh_md, encoding="utf-8")
