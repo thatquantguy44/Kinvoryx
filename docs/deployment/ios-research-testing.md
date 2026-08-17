@@ -2,7 +2,7 @@
 
 How to get the Capital Allocation Decision Brief onto a phone for GATE-M3 discovery interviews.
 
-Two paths exist depending on what you need: a static shared URL for quick walkthroughs, and a local Wi-Fi server for testing with participants on their own devices.
+Three paths exist depending on what you need: a static shared URL for quick walkthroughs, a hosted form server participants can reach from any network, and a local Wi-Fi server for on-device testing.
 
 ---
 
@@ -36,9 +36,53 @@ Then republish by opening this conversation in Claude Code and running the Artif
 
 ---
 
-## Option B — Local Wi-Fi Server
+## Option B — Hosted Form Server (any network, installable as PWA)
 
-Serves the combined HTML over your local network. Any iOS device on the same Wi-Fi can open it in Mobile Safari.
+The interactive form server can be deployed to [Fly.io](https://fly.io) so participants reach it over the internet — no laptop, no shared Wi-Fi required. The page also installs as a PWA on iOS Safari ("Add to Home Screen").
+
+### Prerequisites
+
+- [Fly.io account](https://fly.io/app/sign-up) (free tier is enough)
+- `flyctl` CLI: `curl -L https://fly.io/install.sh | sh`
+
+### Deploy
+
+```bash
+cd /path/to/Kinvoryx
+
+# First deploy: provisions the app
+flyctl launch --name kinvoryx --region ord --no-deploy
+flyctl deploy
+
+# Subsequent deploys after code changes
+flyctl deploy
+```
+
+The app will be live at `https://kinvoryx.fly.dev/`.
+
+### Add to iPhone Home Screen
+
+1. Open `https://kinvoryx.fly.dev/` in Safari on iPhone.
+2. Tap the Share button → **Add to Home Screen** → **Add**.
+3. The app icon (teal square) appears on the home screen and opens full-screen.
+
+### Notes
+
+- The `fly.toml` in the repo root is pre-configured for `shared-cpu-1x` with 256 MB RAM.
+- Machines auto-stop after idle and cold-start in ~2 s — acceptable for research sessions.
+- All computation is server-side Python; participant data is never persisted.
+- `ENV PORT=8080` is set in `Dockerfile`; Fly.io routes HTTPS externally to that port.
+
+**Use this when:**
+- Running sessions where participants are on a different network
+- Sharing a link participants can test before the session
+- Demonstrating on your own phone without a running laptop
+
+---
+
+## Option C — Local Wi-Fi Server (same network only)
+
+Serves the interactive form server over your local network. Any iOS device on the same Wi-Fi can open it in Mobile Safari.
 
 ### Prerequisites
 
@@ -49,28 +93,30 @@ Serves the combined HTML over your local network. Any iOS device on the same Wi-
 
 ```bash
 cd /path/to/Kinvoryx
-python examples/demo/optimizer_decision_brief.py --serve
+python examples/demo/optimizer_form_server.py
 ```
 
 Output:
 
 ```
-Open in Mobile Safari → http://192.168.1.42:8080/
+Form server running.
+  Local:    http://localhost:8080/
+  On phone: http://192.168.1.42:8080/  (same Wi-Fi)
 Ctrl-C to stop.
 ```
 
-Type that URL into Safari on the iPhone. The page loads the combined Household + Reviewer brief for the synthetic demo household.
+Type that URL into Safari on the iPhone. Participants enter their own household data and receive a live brief.
 
 To use a different port:
 
 ```bash
-python examples/demo/optimizer_decision_brief.py --serve --port 9000
+python examples/demo/optimizer_form_server.py --port 9000
 ```
 
 **Use this when:**
-- Watching a participant navigate on their own phone
+- Watching a participant navigate on their own phone with their real data
 - Testing gesture behavior, scroll, and tap targets on a real device
-- Running sessions where screen recording the device separately
+- Running sessions where you screen-record the device separately
 
 ### Troubleshooting
 

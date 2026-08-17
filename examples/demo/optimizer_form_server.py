@@ -12,10 +12,14 @@ Opens on iPhone:   http://<printed-ip>:8080/   (same Wi-Fi)
 from __future__ import annotations
 
 import http.server
+import json
+import os
 import socket
 import socketserver
+import struct
 import sys
 import urllib.parse
+import zlib
 from datetime import date
 from decimal import Decimal, InvalidOperation
 from html import escape
@@ -42,6 +46,87 @@ TODAY = date.today()
 MAX_INCOME = 3
 MAX_DEBT = 4
 MAX_GOAL = 3
+
+# --------------------------------------------------------------------------- #
+# PWA assets                                                                   #
+# --------------------------------------------------------------------------- #
+
+_MANIFEST = json.dumps({
+    "name": "Kinvoryx Allocation Brief",
+    "short_name": "Kinvoryx",
+    "description": "Household capital allocation optimizer",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#F4F7FB",
+    "theme_color": "#0C7057",
+    "icons": [
+        {"src": "/icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable"},
+    ],
+}, indent=2)
+
+_SW_JS = """\
+const CACHE = 'kinvoryx-v1';
+const PRECACHE = ['/', '/manifest.json', '/icon.png'];
+
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE)));
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(
+    caches.match(e.request).then(cached => {
+      const live = fetch(e.request).then(res => {
+        if (res.status === 200) {
+          caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        }
+        return res;
+      });
+      return cached || live;
+    })
+  );
+});
+"""
+
+_ICON_PNG_CACHE: Optional[bytes] = None
+
+
+def _make_icon_png(size: int = 180) -> bytes:
+    """Generate a solid teal (#0C7057) PNG at the given size — no external libs."""
+    r, g, b = 12, 112, 87
+
+    def _chunk(name: bytes, data: bytes) -> bytes:
+        crc = zlib.crc32(name + data) & 0xFFFFFFFF
+        return struct.pack(">I", len(data)) + name + data + struct.pack(">I", crc)
+
+    ihdr = struct.pack(">IIBBBBB", size, size, 8, 2, 0, 0, 0)
+    raw = (bytes([0, r, g, b] * size)) * size  # filter=0 + RGB per scanline
+    raw = b"".join(bytes([0]) + bytes([r, g, b] * size) for _ in range(size))
+    idat = zlib.compress(raw, 9)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + _chunk(b"IHDR", ihdr)
+        + _chunk(b"IDAT", idat)
+        + _chunk(b"IEND", b"")
+    )
+
+
+def _icon_png() -> bytes:
+    global _ICON_PNG_CACHE
+    if _ICON_PNG_CACHE is None:
+        _ICON_PNG_CACHE = _make_icon_png()
+    return _ICON_PNG_CACHE
 
 
 # --------------------------------------------------------------------------- #
@@ -587,6 +672,12 @@ def build_form_html(error: str = "") -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kinvoryx — Allocation Brief</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0C7057">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Kinvoryx">
+  <link rel="apple-touch-icon" href="/icon.png">
   <style>{_FORM_CSS}</style>
 </head>
 <body>
@@ -690,6 +781,11 @@ def build_form_html(error: str = "") -> str:
   </form>
 </div>
 <script>{_FORM_JS}</script>
+<script>
+if ('serviceWorker' in navigator) {{
+  navigator.serviceWorker.register('/sw.js');
+}}
+</script>
 </body>
 </html>"""
 
@@ -700,8 +796,17 @@ def build_form_html(error: str = "") -> str:
 
 class _Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self) -> None:
-        body = build_form_html().encode("utf-8")
-        self._respond(200, "text/html; charset=utf-8", body)
+        path = self.path.split("?")[0]
+        if path in ("/", ""):
+            self._respond(200, "text/html; charset=utf-8", build_form_html().encode("utf-8"))
+        elif path == "/manifest.json":
+            self._respond(200, "application/manifest+json", _MANIFEST.encode("utf-8"))
+        elif path == "/sw.js":
+            self._respond(200, "application/javascript; charset=utf-8", _SW_JS.encode("utf-8"))
+        elif path == "/icon.png":
+            self._respond(200, "image/png", _icon_png())
+        else:
+            self._respond(404, "text/plain", b"Not found")
 
     def do_POST(self) -> None:
         length = int(self.headers.get("Content-Length", 0))
@@ -741,7 +846,7 @@ def _local_ip() -> str:
 
 
 def main() -> None:
-    port = 8080
+    port = int(os.environ.get("PORT", 8080))
     if "--port" in sys.argv:
         port = int(sys.argv[sys.argv.index("--port") + 1])
 
