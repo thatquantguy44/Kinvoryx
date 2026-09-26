@@ -34,3 +34,6 @@ The governing protocol is adapted from the agentic workflow SDK:
   and product-boundary lessons.
 - `spec_011_cash_inflow_decision_brief/` - lessons for the cash-inflow allocation
   decision brief and its Slice A-C implementation.
+- `spec_013_home_sweet_home_optimization/` - confirmed housing-extension scope,
+  ten pilot regions, town/street discovery, school/job evidence distinctions,
+  and specification handoff status.

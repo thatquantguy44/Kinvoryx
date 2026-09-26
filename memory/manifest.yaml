@@ -1,5 +1,5 @@
 version: 1
-updated_at: "2026-08-08"
+updated_at: "2026-09-26"
 status: active
 store_type: committed_metadata_only
 access_level: repo
@@ -29,4 +29,9 @@ workflows:
     path: memory/spec_011_cash_inflow_decision_brief/
     scope: Spec 011 cash-inflow decision brief implementation and review lessons
     owner: product-optimization-research
+    access_level: repo
+  - id: spec_013_home_sweet_home_optimization
+    path: memory/spec_013_home_sweet_home_optimization/
+    scope: Spec 013 housing scope, area discovery, education and employment evidence, and pilot-region planning
+    owner: product-housing-research
     access_level: repo

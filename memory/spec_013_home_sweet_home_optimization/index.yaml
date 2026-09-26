@@ -1,0 +1,68 @@
+workflow_id: spec_013_home_sweet_home_optimization
+updated_at: "2026-09-26"
+access_level: repo
+records:
+  - id: MEM-HOME-20260926-001
+    scope: spec_013_confirmed_product_scope
+    type: decision
+    statement: "User confirmed buy and rent, integrated and standalone modes, detailed optional education access, additional job proximity, and preference-based town, neighborhood and street recommendations leading to home comparison."
+    evidence:
+      - source_run: "2026-09-26-home-sweet-home-spec-handoff"
+        artifact: docs/specs/013-home-sweet-home-optimization.md
+        reference: "Decision register DEC-HOME-001, DEC-HOME-003, DEC-HOME-005, DEC-HOME-009, DEC-HOME-010; user clarifications in the source session."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-26"
+    last_confirmed: "2026-09-26"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-26"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260926-002
+    scope: spec_013_pilot_region_roster
+    type: decision
+    statement: "The user-selected ten regions are Boston, New York/North Jersey, Washington DC area, Atlanta, Chicago, Austin, Dallas, Seattle, Los Angeles, and San Francisco. Footprints and activation waves remain proposals; region membership does not establish source or pilot readiness."
+    evidence:
+      - source_run: "2026-09-26-home-sweet-home-spec-handoff"
+        artifact: docs/specs/013-home-sweet-home-optimization/pilot-regions.md
+        reference: "Confirmed membership table; user-selected roster replaced the initial suggested mix before handoff completion."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-26"
+    last_confirmed: "2026-09-26"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-26"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260926-003
+    scope: spec_013_evidence_precision
+    type: decision
+    statement: "The draft separates town/street discovery from address-level feasibility, school association from enrollment, and historical employment from active job postings. Missing evidence cannot become favorable eligibility or precise opportunity claims."
+    evidence:
+      - source_run: "2026-09-26-home-sweet-home-spec-handoff"
+        artifact: docs/specs/013-home-sweet-home-optimization.md
+        reference: "Sections 9-11; REQ-HOME-009, REQ-HOME-019, REQ-HOME-025, REQ-HOME-026. Proposed behavior, not implemented validation."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-26"
+    last_confirmed: "2026-09-26"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-26"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260926-004
+    scope: spec_013_implementation_status
+    type: decision
+    statement: "Spec 013 is a documentation handoff with 26 functional requirements, 8 NFRs, 34 proposed acceptance criteria and 19 proposed tasks. Housing implementation, provider contracts, live-household controls and pilot admission are not completed; existing synthetic finance code is only a reuse reference."
+    evidence:
+      - source_run: "2026-09-26-home-sweet-home-spec-handoff"
+        artifact: docs/specs/013-home-sweet-home-optimization/engineering-handoff.md
+        reference: "Reuse boundaries, acceptance matrix and proposed delivery backlog."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-26"
+    last_confirmed: "2026-09-26"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-26"
+    author: u-397257ca11bf237e5ed4840b
