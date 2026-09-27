@@ -1,0 +1,136 @@
+workflow_id: spec_013_home_sweet_home_optimization
+updated_at: "2026-09-27"
+access_level: repo
+records:
+  - id: MEM-HOME-20260927-004
+    scope: spec_013_zero_budget_source_plan
+    type: decision
+    statement: "The user set the first DC-area live-data source budget to $0. Source research should use public APIs, no-key reads and free developer quotas only, with hard caps and no paid overages; Trellistate and RentCast are documented as zero-dollar listing probes, while RentCast, WMATA and USAJOBS require user-created keys for keyed tests."
+    evidence:
+      - source_run: "2026-09-27-zero-budget-source-plan"
+        artifact: docs/specs/013-home-sweet-home-optimization/dc-area-pilot.md
+        reference: "Key setup links and zero-dollar listing path; parent DEC-HOME-013 records the budget constraint."
+      - source_run: "2026-09-27-source-doc-review"
+        artifact: docs/specs/013-home-sweet-home-optimization/engineering-handoff.md
+        reference: "Engineering guardrails require per-source free-quota caps and BUDGET_EXHAUSTED behavior before keyed adapters run."
+    confidence: high
+    corroboration_count: 2
+    first_seen: "2026-09-27"
+    last_confirmed: "2026-09-27"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-27"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260927-003
+    scope: spec_013_live_source_research
+    type: decision
+    statement: "The user chose limited live-data testing as the next DC-area milestone (DEC-HOME-012), superseding the synthetic-only-first sequence proposal. Public/licensed source research with fictional household profiles is distinct from real-household pilot authorization; source credentials and routing remain unresolved, while the spending ceiling is superseded by MEM-HOME-20260927-004."
+    evidence:
+      - source_run: "2026-09-27-live-data-prerequisites"
+        artifact: docs/specs/013-home-sweet-home-optimization/dc-area-pilot.md
+        reference: "Immediate live-data milestone and limited DC address-source smoke check; user direction captured in parent DEC-HOME-012."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-27"
+    last_confirmed: "2026-09-27"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-27"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260926-001
+    scope: spec_013_confirmed_product_scope
+    type: decision
+    statement: "User confirmed buy and rent, integrated and standalone modes, detailed optional education access, additional job proximity, and preference-based town, neighborhood and street recommendations leading to home comparison."
+    evidence:
+      - source_run: "2026-09-26-home-sweet-home-spec-handoff"
+        artifact: docs/specs/013-home-sweet-home-optimization/spec.md
+        reference: "Decision register DEC-HOME-001, DEC-HOME-003, DEC-HOME-005, DEC-HOME-009, DEC-HOME-010; user clarifications in the source session."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-26"
+    last_confirmed: "2026-09-26"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-26"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260926-002
+    scope: spec_013_pilot_region_roster
+    type: decision
+    statement: "The user-selected ten regions are Boston, New York/North Jersey, Washington DC area, Atlanta, Chicago, Austin, Dallas, Seattle, Los Angeles, and San Francisco. Footprints and activation waves remain proposals; region membership does not establish source or pilot readiness."
+    evidence:
+      - source_run: "2026-09-26-home-sweet-home-spec-handoff"
+        artifact: docs/specs/013-home-sweet-home-optimization/pilot-regions.md
+        reference: "Confirmed membership table; user-selected roster replaced the initial suggested mix before handoff completion."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-26"
+    last_confirmed: "2026-09-26"
+    status: superseded
+    superseded_by: MEM-HOME-20260927-001
+    access_level: repo
+    pit_scope: "2026-09-26"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260927-001
+    scope: spec_013_pilot_region_roster
+    type: decision
+    statement: "The ten-region roster is preserved, with Washington DC and surrounding Virginia/Maryland (HOME-REG-003) now the user-confirmed first focus. The prior proposal to start with Boston, Chicago and Austin is superseded; precise DC core/outer-ring coverage and later waves remain proposals."
+    evidence:
+      - source_run: "2026-09-27-dc-area-first-pilot-planning"
+        artifact: docs/specs/013-home-sweet-home-optimization/spec.md
+        reference: "DEC-HOME-011 and user first-region preference; DC-area and pilot-region companions refine the sequencing."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-27"
+    last_confirmed: "2026-09-27"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-27"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260927-002
+    scope: spec_013_dc_area_planning
+    type: decision
+    statement: "The DC-area planning companion proposes one complete preference-to-area-to-street-to-home workflow and twelve local cases, preserving all existing requirement IDs. Postal versus actual locality, school year/authority, route windows, and historical versus current job evidence need independent validation; primary-source leads are not implemented or licensed integrations."
+    evidence:
+      - source_run: "2026-09-27-dc-area-first-pilot-planning"
+        artifact: docs/specs/013-home-sweet-home-optimization/dc-area-pilot.md
+        reference: "Regional evidence leads, proposed checkpoints and HOME-DC-CASE-01 through HOME-DC-CASE-12. Documentation only; runtime and source coverage unvalidated."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-27"
+    last_confirmed: "2026-09-27"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-27"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260926-003
+    scope: spec_013_evidence_precision
+    type: decision
+    statement: "The draft separates town/street discovery from address-level feasibility, school association from enrollment, and historical employment from active job postings. Missing evidence cannot become favorable eligibility or precise opportunity claims."
+    evidence:
+      - source_run: "2026-09-26-home-sweet-home-spec-handoff"
+        artifact: docs/specs/013-home-sweet-home-optimization/spec.md
+        reference: "Sections 9-11; REQ-HOME-009, REQ-HOME-019, REQ-HOME-025, REQ-HOME-026. Proposed behavior, not implemented validation."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-26"
+    last_confirmed: "2026-09-26"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-26"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260926-004
+    scope: spec_013_implementation_status
+    type: decision
+    statement: "Spec 013 is a documentation handoff with 26 functional requirements, 8 NFRs, 34 proposed acceptance criteria and 19 proposed tasks. Housing implementation, provider contracts, live-household controls and pilot admission are not completed; existing synthetic finance code is only a reuse reference."
+    evidence:
+      - source_run: "2026-09-26-home-sweet-home-spec-handoff"
+        artifact: docs/specs/013-home-sweet-home-optimization/engineering-handoff.md
+        reference: "Reuse boundaries, acceptance matrix and proposed delivery backlog."
+    confidence: high
+    corroboration_count: 1
+    first_seen: "2026-09-26"
+    last_confirmed: "2026-09-26"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-26"
+    author: u-397257ca11bf237e5ed4840b

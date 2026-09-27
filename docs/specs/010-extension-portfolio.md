@@ -29,6 +29,21 @@ Define how future financial and cross-domain modules are admitted, sequenced, an
 
 ## Module-Specific Requirements
 
+### Housing and Location — Home Sweet Home
+
+[Spec 013](013-home-sweet-home-optimization/spec.md) provides the dedicated housing
+extension handoff, with `REQ-HOME-001` through `REQ-HOME-026`. Confirmed scope
+includes buying and renting; integrated and standalone modes; detailed optional
+education access; additional job access; and town, neighborhood, and street
+recommendations leading to address-level comparison. Its ten confirmed regions
+are Boston, New York/North Jersey, Washington DC area, Atlanta, Chicago, Austin,
+Dallas, Seattle, Los Angeles, and San Francisco.
+
+The module remains a specification draft. Its proposed architecture, backlog,
+source leads, and pilot footprints do not establish passed admission requirements
+or authorize a real-household pilot. It must satisfy `REQ-EXT-001` through
+`REQ-EXT-007`, with the evidence and safe fallback described in Spec 013.
+
 ### Life-Event Simulator
 
 - **REQ-LIFE-001 — Must:** Compare at least two named alternatives against no-change baseline.
@@ -61,4 +76,3 @@ Define how future financial and cross-domain modules are admitted, sequenced, an
 - No extension starts implementation until it passes REQ-EXT-001 through REQ-EXT-007.
 - Every extension has its own numbered spec before design or engineering begins.
 - Extension launch claims are limited to validated decision types, jurisdictions, users, and data coverage.
-
