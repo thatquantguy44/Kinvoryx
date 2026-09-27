@@ -1,11 +1,17 @@
 # Home Sweet Home — Ten Pilot Regions
 
-**Parent:** [Spec 013](../013-home-sweet-home-optimization.md)\
-**Date:** September 26, 2026\
-**Status:** Region membership confirmed by user; footprints, activation order, sources, and thresholds proposed\
+**Parent:** [Spec 013](spec.md)\
+**Date:** September 27, 2026\
+**Status:** Ten regions and DC-area first focus confirmed; detailed footprints, later waves, sources, and thresholds proposed\
 **Trace:** REQ-HOME-004, REQ-HOME-009, REQ-HOME-018, REQ-HOME-019, REQ-HOME-024, REQ-HOME-025, REQ-HOME-026
 
 ## 1. Confirmed membership and proposed footprints
+
+The user selected Washington DC and surrounding Virginia/Maryland as the first
+focus on September 27, 2026. See the [DC-area first-pilot plan](dc-area-pilot.md)
+for proposed core/outer-ring boundaries and local source/validation work. This
+supersedes the September 26 proposal to start with Boston, Chicago and Austin;
+the ten-region membership and stable IDs are unchanged.
 
 These are product pilot boundaries, not claims to match Census metropolitan definitions. County/city membership must become versioned polygons with official geographic identifiers before use. A metro name alone never establishes a covered address. Neighborhoods and school districts require their own geometries. Crossing a region boundary for travel or job access does not silently enable property recommendations outside it.
 
@@ -86,15 +92,16 @@ For each region, after permitted source access exists, independently review at l
 
 Review at least 20 address/grade/year school-access cases per region, including boundaries, choice/program routes, ambiguous addresses, and future-year queries; all critical access claims must match the authoritative evidence or remain unknown. Validate at least 20 route queries across enabled modes/time windows against source responses. Audit at least 10 town/neighborhood and 10 street-segment outputs per region for sampling disclosure, sparse-data behavior, and successful address-level revalidation. Where current jobs are offered, inspect at least 20 postings for deduplication, worksite, expiry and advertised role data; historical-only mode must never label aggregates as openings.
 
-Proposed operating sequence, subject to source readiness and available owners:
+DC-first priority is confirmed; subsequent waves are proposals, subject to source readiness and available owners:
 
 | Wave | Regions | Reason for sequencing hypothesis |
 |---|---|---|
-| A | Boston, Chicago, Austin | Exercise contrasting travel/education/cost configurations without starting with every cross-state integration |
-| B | New York/North Jersey, Washington DC area, Atlanta, Dallas | Add cross-jurisdiction and multiple-job-center complexity using the same validated contracts |
-| C | Seattle, Los Angeles, San Francisco | Exercise cross-water/corridor travel, broader Bay Area discovery, environmental and education variation |
+| A | Washington DC area, including the reviewed VA/MD footprint | User-confirmed first focus; validate one complete area-to-home workflow and cross-jurisdiction evidence |
+| B | Boston, Chicago, Austin | Proposed subsequent markets after DC learning and source readiness |
+| C | New York/North Jersey, Atlanta, Dallas | Proposed expansion using validated contracts; order remains open |
+| D | Seattle, Los Angeles, San Francisco | Proposed subsequent coverage; order remains open |
 
-All ten participate in specification, source feasibility research, and synthetic fixtures from the start. Waves govern real-user activation, not the user's confirmed product scope. A later-wave region that is ready can move earlier through an explicit product decision; a failed source audit must not be hidden by launching a smaller unannounced footprint.
+All ten remain registered in the specification with explicit coverage states. Detailed source research, synthetic regional fixtures and implementation focus first on DC; work on the other nine is not a prerequisite. Waves govern activation, not deletion of the user's confirmed product scope. Later waves may change through an explicit product decision; a failed source audit must not be hidden by launching a smaller unannounced footprint.
 
 ## 6. Region-level stop and fallback rules
 

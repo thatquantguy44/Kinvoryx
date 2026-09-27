@@ -1,13 +1,13 @@
 # 013 Home Sweet Home Optimization
 
 **Status:** Comprehensive specification draft for collaborative review; not implemented or approved for pilot\
-**Date:** September 26, 2026\
+**Date:** September 27, 2026\
 **Working product name:** Home Sweet Home\
 **Branch:** `HomeSweetHomeOptimization`\
 **Master feature:** FEAT-018\
 **Portfolio phase:** 5, housing/location extension; research can precede admission, implementation remains gated by Spec 010\
-**Related specs:** [002](002-household-state-and-data-model.md), [003](003-ai-orchestration-and-audit.md), [004](004-capital-allocation-optimizer.md), [005](005-product-labs-and-workflows.md), [006](006-jurisdiction-intelligence.md), [007](007-validation-and-market-research.md), [009](009-monitoring-alerts-and-outcomes.md), [010](010-extension-portfolio.md), [012](012-governed-decision-brief-workflow.md)\
-**Companions:** [Ten pilot regions](013-home-sweet-home-optimization/pilot-regions.md), [Engineering, validation, and delivery handoff](013-home-sweet-home-optimization/engineering-handoff.md)
+**Related specs:** [002](../002-household-state-and-data-model.md), [003](../003-ai-orchestration-and-audit.md), [004](../004-capital-allocation-optimizer.md), [005](../005-product-labs-and-workflows.md), [006](../006-jurisdiction-intelligence.md), [007](../007-validation-and-market-research.md), [009](../009-monitoring-alerts-and-outcomes.md), [010](../010-extension-portfolio.md), [012](../012-governed-decision-brief-workflow.md)\
+**Companions:** [DC-area first pilot](dc-area-pilot.md), [Ten pilot regions](pilot-regions.md), [Engineering, validation, and delivery handoff](engineering-handoff.md)
 
 ## 1. Product decision and intended outcome
 
@@ -28,11 +28,14 @@ The differentiating hypothesis is that combining area discovery, total cost, dai
 | DEC-HOME-003 | Integrate with Kinvoryx household finances and retain standalone search. | Confirmed by user, September 26, 2026 |
 | DEC-HOME-004 | Interpret “extension” as a product module/workspace, with no browser extension required. | Follows confirmed integrated-workspace direction |
 | DEC-HOME-005 | Include optional detailed education: address-specific assignment, programs, enrollment uncertainty, travel time, childcare, and school metrics with source context. | Confirmed by user, September 26, 2026 |
-| DEC-HOME-006 | Start with manual/synthetic candidates; add licensed discovery after source validation. | Proposed delivery sequence; not authorization to collect household data |
+| DEC-HOME-006 | Start with manual/synthetic candidates; add licensed discovery after source validation. | Original sequence proposal superseded by DEC-HOME-012 for the first data-test milestone; deterministic synthetic fixtures remain required |
 | DEC-HOME-007 | Preserve hard constraints, individual preferences, and uncertainty before any optional ordering. | Proposed design, consistent with Specs 002 and 010 |
 | DEC-HOME-008 | Initial consumer is a household with a move or lease decision in the next 3–12 months; payer hypothesis is the household. | Discovery hypothesis; employer/professional distribution later |
 | DEC-HOME-009 | Include proximity and travel access to additional job opportunities, beyond the current workplace. | Confirmed by user, September 26, 2026 |
 | DEC-HOME-010 | Recommend towns, neighborhoods, and streets/segments based on preferences to progressively narrow the search before evaluating homes. | Confirmed by user, September 26, 2026 |
+| DEC-HOME-011 | Focus first on Washington DC and surrounding Virginia and Maryland (HOME-REG-003), retaining the other nine regions for later expansion. | Confirmed by user, September 27, 2026; core/outer-ring footprint and activation evidence remain proposals |
+| DEC-HOME-012 | Make a limited live-data test the next research milestone for DC/VA/MD. | User-confirmed direction, September 27, 2026; source access, credentials and routing remain unresolved; spending is constrained by DEC-HOME-013; does not authorize purchases, private-household collection or public launch |
+| DEC-HOME-013 | Use a zero-dollar source budget for the first live-data test, prioritizing public APIs and free developer quotas with hard caps. | Confirmed by user, September 27, 2026; free-tier availability and terms require source-specific verification and do not establish complete listing coverage |
 
 Confirmed scope choices do not imply that formulas, implementation, commercial terms, pilot launch, or source contracts have been approved. Proposed architecture and backlog below are review aids; they become an executable plan after the spec and extension admission gate are approved.
 
@@ -56,11 +59,11 @@ Measure whether participants can explain trade-offs, identify missing evidence, 
 ### First release target after admission
 
 - Buying, renting, and comparing tenure for an owner-occupied primary home; USD and U.S. conventions.
-- Ten region configurations, with both tenure modes evaluated in each. A region may remain in research while another enters controlled pilot.
+- Register the ten-region roadmap from the start; focus initial regional research and pilot development on HOME-REG-003 (DC and surrounding VA/MD). Both tenure modes remain in scope for each region as it is admitted; the other nine remain in research until their own gates pass.
 - Ordinary long-term rentals and purchases of single-family homes, townhomes, and condos whose costs and restrictions can be represented. User-entered candidates are supported without a live listing feed.
 - Standalone mode, optional finance connection, multi-member preferences, town/neighborhood/street recommendations, candidate comparison, detailed education access, additional-job access, route estimates, scenario testing, shortlist, and review/export.
 - Cash purchases and fixed-rate, fully amortizing mortgages; input-driven mortgage-insurance costs. Quotes and qualification come from lenders, not this module.
-- Synthetic local prototype first; private persistence, collaboration, licensed live sources, and alerts require later pilot controls.
+- Begin with permitted live-source feasibility checks alongside synthetic correctness fixtures. The first data-test milestone can use real public/licensed evidence with fictional household profiles; private household persistence, collaboration and alerts retain their later pilot controls. Clearly distinguish live inputs from synthetic fixtures.
 
 ### Deferred or unsupported
 
@@ -353,7 +356,7 @@ All thresholds are proposed pilot acceptance targets, not measured results.
 
 ## 15. Acceptance, release gates, and validation status
 
-The engineering companion maps every requirement and NFR to an acceptance criterion, test method, proposed task, and owner role. Tests do not exist yet; no criterion is claimed passed. Tests must cite the stable `AC-HOME-*` ID when implemented. Synthetic golden cases must cover all ten region configurations, both tenure modes, household conflicts, sparse evidence, and incompatible eligibility/time assumptions.
+The engineering companion maps every requirement and NFR to an acceptance criterion, test method, proposed task, and owner role. Tests do not exist yet; no criterion is claimed passed. Tests must cite the stable `AC-HOME-*` ID when implemented. Registry/gating fixtures cover all ten region IDs, including disabled/unsupported behavior. Detailed synthetic golden cases first cover the DC-area configuration, both tenure modes, household conflicts, sparse evidence, and incompatible eligibility/time assumptions; each later region needs its own equivalent evidence before admission.
 
 | Gate | Required evidence | Current state |
 |---|---|---|
@@ -363,7 +366,12 @@ The engineering companion maps every requirement and NFR to an acceptance criter
 | GATE-HOME-3 — Region pilot admission | Named accountable owners; both-tenure coverage audit; privacy/security/legal review; budget; retention; independent correctness review; operations/rollback | Not started for all ten regions |
 | GATE-HOME-4 — Expansion | Per-region usability and outcome evidence, coverage/cost within limits, no unresolved severe incident, documented change approval | Not started |
 
-No all-ten-ready assertion follows from one successful market. Research can continue in all ten while controlled exposure proceeds only where gates pass. Parent Specs 007 and 010 remain authoritative for program-level expansion.
+No all-ten-ready assertion follows from one successful market. DC-area work is the first priority; research in other regions is optional and does not block it. The [DC-area companion](dc-area-pilot.md) defines the proposed core footprint, source investigations, complete first search journey and local benchmark under existing requirement IDs. Parent Specs 007 and 010 remain authoritative for program-level expansion.
+
+DEC-HOME-012 prioritizes read-only source feasibility before product implementation.
+This research may inspect permitted live public data without asserting GATE-HOME-0
+through GATE-HOME-3 are passed. A live source check does not establish accurate
+rankings, complete listing coverage, household-data readiness or a live pilot.
 
 ## 16. Risks and decisions still needed
 
@@ -384,7 +392,7 @@ No all-ten-ready assertion follows from one successful market. Research can cont
 
 Open decisions for the next review:
 
-1. Approve precise footprints for the ten confirmed regions and select first activation wave after source audit.
+1. Approve the core/outer-ring footprint and first activated capabilities for the confirmed DC-area focus; retain the other nine regions for subsequent sequencing after source audit.
 2. Choose which objective inputs are enabled by default within the confirmed detailed education, job-access, and town/street scope. Proposed default: education and job interests optional, money/time/property fit visible, no prefilled household utility weights.
 3. Select initial buyer/renter recruitment segments, accountable product/domain owners, and the target decision window.
 4. Choose candidate feed, routing/geocoding, mapping, education, and hazard suppliers after rights, coverage, freshness, privacy, and cost evaluation; no contract is assumed.
@@ -392,10 +400,19 @@ Open decisions for the next review:
 6. Approve cost assumptions, source freshness policy, retention, operational budgets, and the measurable pilot thresholds in the companion.
 7. Validate pricing as a search-period pass or subscription through research. Do not monetize ranking or treat vendor referral revenue as user value.
 
+For the immediate live-data milestone, the user selected a $0 data/API budget.
+Use public APIs, free developer quotas and manual authorized candidates only.
+Do not create paid accounts, enable overages, assume full active-listing
+coverage, or continue queries after a free quota is exhausted. The exact first
+source sample can use the proposed DC core footprint without claiming that the
+full footprint or outer ring is approved.
+
 ## 17. Source and repository provenance
 
 Prepared from the master handoff, Specs 002–010 and 012, current Python household/optimizer/governance code, platform memory, and the read-only SDK's spec-driven development, engineering principles, memory, data-quality and point-in-time guidance. Existing Spec 011 behavior remains unchanged; this spec defines a separate housing result contract.
 
 External primary sources linked in this spec and the pilot companion were researched September 26, 2026. They support specific data/behavior distinctions, not a completed vendor audit, legal determination, or validation of the ten-market business case. Recheck time-sensitive guidance before implementation or pilot.
+
+The September 27 DC-area refinement adds the user's confirmed first-market priority and primary-source research in its companion. It changes sequencing, not the ten-region roster or stable requirement IDs.
 
 The repository was clean and `main` equaled freshly fetched `origin/main` at `f8daefb` before creating `HomeSweetHomeOptimization`. This handoff adds documentation only. It does not collect household data, acquire providers, implement the engine, publish a service, or imply passed acceptance tests.

@@ -31,7 +31,7 @@ Define how future financial and cross-domain modules are admitted, sequenced, an
 
 ### Housing and Location — Home Sweet Home
 
-[Spec 013](013-home-sweet-home-optimization.md) provides the dedicated housing
+[Spec 013](013-home-sweet-home-optimization/spec.md) provides the dedicated housing
 extension handoff, with `REQ-HOME-001` through `REQ-HOME-026`. Confirmed scope
 includes buying and renting; integrated and standalone modes; detailed optional
 education access; additional job access; and town, neighborhood, and street

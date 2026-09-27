@@ -1,9 +1,21 @@
 # Home Sweet Home — Engineering, Validation, and Delivery Handoff
 
-**Parent:** [Spec 013](../013-home-sweet-home-optimization.md)\
-**Date:** September 26, 2026\
+**Parent:** [Spec 013](spec.md)\
+**Date:** September 27, 2026\
 **Status:** Proposed design and backlog for review; no implementation or passed acceptance evidence\
 **Region contract:** [Ten-region companion](pilot-regions.md)
+
+**First regional focus:** [Washington DC and surrounding VA/MD](dc-area-pilot.md),
+confirmed September 27, 2026. DC-specific research and fixtures come first; the
+remaining nine regions retain their IDs and independent admission gates.
+
+**Next research milestone:** DEC-HOME-012 prioritizes a limited live-data test.
+Read-only source checks can precede the synthetic application journey; production
+adapters, external spending and real-household use retain their source and pilot
+gates. The DC companion records a successful public address-source smoke check
+and the unresolved listing, credential and routing dependencies. DEC-HOME-013
+sets the first live-test source budget to $0; keyed feeds must enforce free-quota
+caps and stop before any paid or overage path is reached.
 
 ## 1. Existing code and reuse boundary
 
@@ -59,6 +71,21 @@ flowchart LR
 ```
 
 Adapters fetch and normalize evidence outside the pure deterministic core. A failed adapter cannot substitute language-model guesses. Separate job-posting ingestion from listing ingestion; both use rights, freshness, deduplication, and budget controls. No browser fetching is necessary to compute a result from a confirmed manual snapshot.
+
+For live-data research, distinguish the origin of the household profile from the
+origin of each external evidence record. A fictional household does not make a
+live property/route/source record synthetic. Do not bypass existing household
+guards or feed real household data through a `synthetic=True` flag. Record source
+checks separately from housing-engine acceptance results. The DC source check
+also identified a Python certificate-trust setup issue; preserve certificate
+verification when implementing network clients.
+
+For the $0 source milestone, implement provider usage controls before any keyed
+adapter runs: per-source request budgets, monthly free-quota ceilings, no stored
+payment method dependency where avoidable, no automatic retries that can spend
+quota after failure, and a `BUDGET_EXHAUSTED` state when the local cap is reached.
+Treat public/no-key listing probes and free developer quotas as source-quality
+tests, not production inventory coverage.
 
 ## 3. Minimum data and typed contracts
 
@@ -205,7 +232,7 @@ All tasks are pending. Owner roles must be assigned to people before pilot work.
 | T-HOME-005 | B: Feasibility and preferences / Optimization | REQ-HOME-003, REQ-HOME-011, REQ-HOME-012, REQ-HOME-014, NFR-HOME-008 | Frontier, bounds/ties, stable utility anchors, explicit disagreement, no-results diagnostics and invariance evidence. |
 | T-HOME-006 | B: Scenarios / Model Risk | REQ-HOME-013 | Versioned scenario inputs, reversal examples, weight sensitivity, bounded/unknown result labels and stress applicability review. |
 | T-HOME-007 | B: Finance connection / Platform, Finance | REQ-HOME-002 | Read-only synthetic household bridge with explicit expense replacement/overlap, provenance and no double-counted debt. |
-| T-HOME-008 | C: Geography and region registry / Geospatial | REQ-HOME-004, REQ-HOME-018 | All ten synthetic region configs, polygons/segment identities, unit precision, district/city independence and boundary tests. |
+| T-HOME-008 | C: Geography and region registry / Geospatial | REQ-HOME-004, REQ-HOME-018 | Register all ten region IDs with gating fixtures; first build detailed DC/VA/MD polygons, segment identities, unit precision, district/city independence and boundary tests. Other regions remain research-only until their own evidence exists. |
 | T-HOME-009 | C: Evidence and adapters / Data | REQ-HOME-005, REQ-HOME-010, REQ-HOME-019, NFR-HOME-002 | Manual adapter plus fake provider fixtures; rights/expiry/as-of/dedupe/join checks; permitted live adapter only after source approval. |
 | T-HOME-010 | C: Routes / Geospatial | REQ-HOME-008 | Mode/window-aware synthetic route contracts, trip accounting, uncertainty and no straight-line-time substitution; later licensed provider audit. |
 | T-HOME-011 | C: Education / Education, Data | REQ-HOME-009 | Address/year/grade/program states, current versus future boundaries, childcare/enrollment unknowns, district-source hierarchy and fixtures. |
@@ -249,7 +276,7 @@ Rollback controls: disable housing globally, by region, source, capability, or e
 
 Documentation deliverables are the parent spec, confirmed ten-region list with proposed boundaries, contracts/architecture proposal, traceable tests/tasks, risk and metric definitions, master handoff links, and metadata-only repo memory. They are ready for discussion; execution readiness is not asserted.
 
-The next product review should resolve footprint breadth (especially Bay Area versus San Francisco city, and Dallas versus full DFW), default objective inputs, first activated cohort, source budgets and owners. Domain review should challenge cash/equity/escrow treatment, school/childcare access semantics, job evidence types, geographic sampling and sparse-data thresholds. Engineering review should validate contract reuse and benchmark targets before approving a plan. No existing application code needs to change to complete this specification handoff.
+The next product review should resolve the DC core/outer-ring footprint, concrete preference questions, first activated cohort, source budgets and owners. Bay Area and Dallas footprint decisions remain on the later-region backlog and do not block DC. Domain review should challenge cash/equity/escrow treatment, school/childcare access semantics, job evidence types, geographic sampling and sparse-data thresholds. Engineering review should validate contract reuse and benchmark targets before approving a plan. No existing application code needs to change to complete this specification handoff.
 
 ## 11. Documentation verification record
 
@@ -266,3 +293,12 @@ arithmetic only. They are not housing-engine test results, source coverage
 validation, or pilot approval. Application tests were not run for this
 documentation-only change. This record captures verification before committing
 the handoff.
+
+## 12. DC-first planning refinement — September 27, 2026
+
+DEC-HOME-011 confirms HOME-REG-003 as the first focus. The DC companion adds
+proposed source investigations, geographic tiers, preference research, delivery
+checkpoints and twelve local benchmark cases mapped to existing tasks and
+acceptance criteria. The 26 requirements, 8 NFRs, 34 acceptance criteria and
+19 task IDs are preserved. The September 26 verification record above describes
+the original handoff; source/implementation/pilot validation remains pending.

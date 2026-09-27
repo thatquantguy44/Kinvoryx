@@ -1,7 +1,7 @@
 # Household Decision Intelligence Master Handoff
 
 **Status:** Draft for spec-driven development  
-**Date:** September 26, 2026\
+**Date:** September 27, 2026\
 **Source:** [Household Decision Intelligence Overview](Household%20Decision%20Intelligence%20Overview.md)  
 **Initial product:** Household Capital Allocation Optimizer (HCAO)  
 **Long-term category:** Household Decision Intelligence (HDI)
@@ -34,7 +34,7 @@ The numbered specs below are the canonical implementation handoff units. New spe
 | [010 Extension Portfolio](specs/010-extension-portfolio.md) | Adjacent financial and cross-domain modules with admission gates | 14-16, 21, 24-25 | Product Strategy, Research |
 | [011 Cash Inflow Allocation Decision Brief](specs/011-cash-inflow-allocation-decision-brief.md) | Synthetic decision brief for competing uses of a discrete cash inflow | 8, 18-20, 25 | Product, Optimization, Research |
 | [012 Governed Decision-Brief Workflow](specs/012-governed-decision-brief-workflow.md) | End-to-end, case-bound governance evidence and pilot-gate evaluation | 6B, 9, 11A, 21, 25 | Platform, Model Risk, Privacy, Security |
-| [013 Home Sweet Home Optimization](specs/013-home-sweet-home-optimization.md) | Buy/rent decisions, town-to-street discovery, total costs, education and job access across ten pilot regions | 14-16, 21, 24-25; user scope confirmed September 26, 2026 | Product, Geospatial, Education, Labor Data, Finance, Privacy |
+| [013 Home Sweet Home Optimization](specs/013-home-sweet-home-optimization/spec.md) | Buy/rent decisions, town-to-street discovery, total costs, education and job access across ten pilot regions | 14-16, 21, 24-25; user scope confirmed September 26, 2026 | Product, Geospatial, Education, Labor Data, Finance, Privacy |
 
 ## 3. Product Boundary
 
@@ -92,7 +92,7 @@ The numbered specs below are the canonical implementation handoff units. New spe
 | FEAT-015 | Extension admission and sequencing | 4-6 | [010](specs/010-extension-portfolio.md) | REQ-EXT-001-007 |
 | FEAT-016 | Cash-inflow allocation decision brief | 0-1 | [011](specs/011-cash-inflow-allocation-decision-brief.md) | REQ-CIB-001-023, AC-CIB-001-013 |
 | FEAT-017 | Governed decision-brief workflow | 1 | [012](specs/012-governed-decision-brief-workflow.md) | REQ-GDB-001-006, AC-GDB-001-004 |
-| FEAT-018 | Home Sweet Home housing and location optimization | 5 | [013](specs/013-home-sweet-home-optimization.md) | REQ-HOME-001–026, NFR-HOME-001–008, AC-HOME-001–034 |
+| FEAT-018 | Home Sweet Home housing and location optimization | 5 | [013](specs/013-home-sweet-home-optimization/spec.md) | REQ-HOME-001–026, NFR-HOME-001–008, AC-HOME-001–034 |
 
 ## 6. Cross-Cutting Architectural Contracts
 
@@ -132,7 +132,7 @@ Current verification evidence is recorded by each committed slice. Slice D adds 
 
 ### Housing Extension Specification — September 26, 2026
 
-[Spec 013](specs/013-home-sweet-home-optimization.md) is a comprehensive draft on
+[Spec 013](specs/013-home-sweet-home-optimization/spec.md) is a comprehensive draft on
 `HomeSweetHomeOptimization`, created from `main` matching freshly fetched
 `origin/main` at `f8daefb`. It has no housing implementation or passed housing
 acceptance tests. Existing financial prototype behavior is unchanged.
@@ -151,6 +151,25 @@ defines proposed contracts, cost/optimization logic, tests, delivery tasks,
 metrics, and operations. Implementation depends on Spec 010 admission and spec
 review; source contracts, real-household use, jurisdiction coverage, and pilot
 activation are not established by this handoff.
+
+On September 27, the user selected Washington DC and surrounding Virginia and
+Maryland as the first focus (DEC-HOME-011 / HOME-REG-003). The
+[DC-area pilot companion](specs/013-home-sweet-home-optimization/dc-area-pilot.md)
+adds proposed core/outer-ring coverage, local source investigations, concrete
+preference research, a complete area-to-home workflow and twelve regional
+benchmark cases. The other nine regions remain on the roadmap; their detailed
+integrations do not block DC work. Exact footprint and pilot approval remain open.
+
+The user subsequently chose a limited live-data test as the next research
+milestone (DEC-HOME-012). One public DC address-source connectivity/schema smoke
+check succeeded; it is not listing or housing-engine validation. Property-feed
+access, authenticated source credentials and routing remain to be resolved. The
+user then set the first source budget to $0 (DEC-HOME-013). The DC companion
+therefore prioritizes public APIs, no-key reads and free developer quotas with
+hard caps; it records Trellistate and RentCast as zero-dollar listing probes and
+links the setup paths for RentCast, WMATA and USAJOBS. This does not establish
+complete active-listing coverage. Real household data, paid services and pilot
+activation are not authorized by this research preference.
 
 ## 9. Repository Memory Protocol
 
@@ -180,4 +199,4 @@ Seeded memory areas:
 6. Approve pilot stop conditions, reviewer roles, retention controls, and an operational audit store before any controlled human pilot.
 7. Validate the cash-inflow trigger, buyer, pricing hypothesis, and decision-brief usefulness before expanding the prototype beyond synthetic cases.
 8. Continue the repository memory loop after each substantial spec slice: prime, learn, curate, and keep memory metadata-only.
-9. Review Spec 013's proposed region footprints, objective defaults, source feasibility, accountable owners, and admission evidence before implementing the Home Sweet Home extension. Preserve the user's confirmed ten-region roster and town/street, job-access, education, buy/rent, and dual-mode scope.
+9. Focus Spec 013 planning first on Washington DC and surrounding VA/MD: review core/outer-ring coverage, preference questions, source feasibility, accountable owners, and admission evidence. Preserve the ten-region roadmap and confirmed town/street, job-access, education, buy/rent, and dual-mode scope.
