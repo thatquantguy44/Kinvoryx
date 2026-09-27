@@ -5,6 +5,46 @@ scope. They contain no real household inputs, private destinations, listing rows
 or credentials. Specs remain authoritative. Record provenance and pseudonymous
 attribution are maintained in [index.yaml](index.yaml).
 
+## MEM-HOME-20260927-006 — Preserve Free Supporting-Variable Sources
+
+- **Scope:** spec_013_zero_budget_supporting_sources
+- **Type:** decision
+- **Statement:** Track additional free/public sources beyond listings for the
+  DC-area benchmark, including Census/ACS, LODES, BLS, USAJOBS, WMATA/GTFS, OSM,
+  local open data, FEMA, NWS/NOAA, AirNow, FCC broadband, NCES, childcare
+  datasets, Zillow Research and Redfin Data Center.
+- **Evidence:** [Spec 013 source table](../../docs/specs/013-home-sweet-home-optimization/spec.md), [DC-area evidence table](../../docs/specs/013-home-sweet-home-optimization/dc-area-pilot.md), September 27 user request.
+- **Confidence:** high for source-candidate preservation; source suitability remains untested.
+- **Status:** active
+- **Access level:** repo
+- **Date:** 2026-09-27
+
+Treat these as supporting evidence for area context, jobs, transit, hazards,
+broadband, education metadata, childcare and amenities. They do not establish
+live listing coverage, school assignment, unit-level broadband, childcare
+availability, health impact, insurability or a complete recommendation.
+
+## MEM-HOME-20260927-005 — Exclude RentCast From the Required $0 Path
+
+- **Scope:** spec_013_zero_budget_source_plan
+- **Type:** decision
+- **Statement:** The first DC-area live-data source test still uses a $0 budget,
+  but RentCast is excluded from the required setup unless a no-payment,
+  no-overage path is verified.
+- **Evidence:** [DC-area source plan](../../docs/specs/013-home-sweet-home-optimization/dc-area-pilot.md), [local example config](../../config/home_sweet_home.sources.example.yaml), September 27 user correction.
+- **Confidence:** high for source-budget decision; not a judgment on RentCast data quality.
+- **Status:** active
+- **Access level:** repo
+- **Date:** 2026-09-27
+
+Use Trellistate as the no-key public listing probe and manual authorized
+candidates for listing normalization. WMATA is free of charge; test no-key/public
+surfaces first and use the portal key only where an endpoint requires it. Use
+USAJOBS only after user-created keys are provided or locally configured. Treat
+RentCast as excluded from the strict zero-dollar path because its official API
+docs describe a free monthly allowance with overage fees; revisit only if a
+no-payment, no-overage setup is proven.
+
 ## MEM-HOME-20260927-004 — First Live Source Budget Is Zero Dollars
 
 - **Scope:** spec_013_zero_budget_source_plan
@@ -13,15 +53,13 @@ attribution are maintained in [index.yaml](index.yaml).
   public APIs, no-key reads and free developer quotas only.
 - **Evidence:** [DC-area key setup and listing path](../../docs/specs/013-home-sweet-home-optimization/dc-area-pilot.md), [engineering quota guards](../../docs/specs/013-home-sweet-home-optimization/engineering-handoff.md), September 27 user direction.
 - **Confidence:** high for budget and intended source path, not source coverage.
-- **Status:** active
+- **Status:** superseded by MEM-HOME-20260927-005 on 2026-09-27
 - **Access level:** repo
 - **Date:** 2026-09-27
 
-Use Trellistate as a no-key public listing probe and RentCast as a small keyed
-free-quota probe if the user creates an account. Use WMATA and USAJOBS only after
-user-created keys are provided or locally configured. Enforce hard source caps
-and stop before overage or paid plans. This path can validate schema, rights,
-coverage gaps and join shape; it cannot establish MLS-grade inventory coverage.
+This record incorrectly treated RentCast as a usable zero-dollar listing probe.
+The user corrected that RentCast costs money; MEM-HOME-20260927-005 supersedes
+the setup path and removes RentCast from required keys/config.
 
 ## MEM-HOME-20260927-003 — Live Source Research Is the Next Milestone
 

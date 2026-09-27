@@ -165,11 +165,14 @@ milestone (DEC-HOME-012). One public DC address-source connectivity/schema smoke
 check succeeded; it is not listing or housing-engine validation. Property-feed
 access, authenticated source credentials and routing remain to be resolved. The
 user then set the first source budget to $0 (DEC-HOME-013). The DC companion
-therefore prioritizes public APIs, no-key reads and free developer quotas with
-hard caps; it records Trellistate and RentCast as zero-dollar listing probes and
-links the setup paths for RentCast, WMATA and USAJOBS. This does not establish
-complete active-listing coverage. Real household data, paid services and pilot
-activation are not authorized by this research preference.
+therefore prioritizes public APIs, no-key reads and government/agency developer
+feeds with hard caps. After the user noted that RentCast costs money,
+DEC-HOME-014 excludes it from the required $0 setup unless a no-payment,
+no-overage path is verified. The current setup path is WMATA free developer
+access and USAJOBS; WMATA should be tested both without a key and with the portal
+key where an endpoint requires it. Trellistate remains the no-key listing probe.
+This does not establish complete active-listing coverage. Real household data,
+paid services and pilot activation are not authorized by this research preference.
 
 ## 9. Repository Memory Protocol
 

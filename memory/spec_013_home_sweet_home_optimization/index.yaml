@@ -2,6 +2,44 @@ workflow_id: spec_013_home_sweet_home_optimization
 updated_at: "2026-09-27"
 access_level: repo
 records:
+  - id: MEM-HOME-20260927-006
+    scope: spec_013_zero_budget_supporting_sources
+    type: decision
+    statement: "The user asked to preserve additional free/public source candidates beyond real-estate listings. Spec 013 now tracks Census/ACS, LODES, BLS, USAJOBS, WMATA/GTFS, OSM, local open data, FEMA, NWS/NOAA, AirNow, FCC broadband, NCES, childcare datasets, Zillow Research and Redfin Data Center as supporting evidence sources for the DC-area benchmark, with explicit limits that they do not prove live listings, school assignment, unit service, or suitability."
+    evidence:
+      - source_run: "2026-09-27-free-supporting-source-inventory"
+        artifact: docs/specs/013-home-sweet-home-optimization/spec.md
+        reference: "Section 11 zero-dollar/public-source candidates table under Sources, coverage, and evidence."
+      - source_run: "2026-09-27-free-supporting-source-inventory"
+        artifact: docs/specs/013-home-sweet-home-optimization/dc-area-pilot.md
+        reference: "Regional evidence and source investigation table expanded with supporting-variable sources."
+    confidence: high
+    corroboration_count: 2
+    first_seen: "2026-09-27"
+    last_confirmed: "2026-09-27"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-27"
+    author: u-397257ca11bf237e5ed4840b
+  - id: MEM-HOME-20260927-005
+    scope: spec_013_zero_budget_source_plan
+    type: decision
+    statement: "The user corrected the zero-dollar source plan: RentCast should not be treated as required $0 infrastructure because its official API docs describe a free monthly allowance with overage fees. The required first setup path is Trellistate no-key listing reads, WMATA free developer access tested with and without a portal key as endpoints require, and USAJOBS keys; RentCast is excluded unless a no-payment, no-overage setup is verified."
+    evidence:
+      - source_run: "2026-09-27-rentcast-cost-correction"
+        artifact: docs/specs/013-home-sweet-home-optimization/dc-area-pilot.md
+        reference: "DEC-HOME-014 and source table remove RentCast from required $0 setup; RentCast pricing docs retained as exclusion evidence."
+      - source_run: "2026-09-27-rentcast-cost-correction"
+        artifact: config/home_sweet_home.sources.example.yaml
+        reference: "Example config removes RentCast from required keys and lists it under excluded_sources."
+    confidence: high
+    corroboration_count: 2
+    first_seen: "2026-09-27"
+    last_confirmed: "2026-09-27"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-27"
+    author: u-397257ca11bf237e5ed4840b
   - id: MEM-HOME-20260927-004
     scope: spec_013_zero_budget_source_plan
     type: decision
@@ -17,7 +55,8 @@ records:
     corroboration_count: 2
     first_seen: "2026-09-27"
     last_confirmed: "2026-09-27"
-    status: active
+    status: superseded
+    superseded_by: MEM-HOME-20260927-005
     access_level: repo
     pit_scope: "2026-09-27"
     author: u-397257ca11bf237e5ed4840b

@@ -1,0 +1,75 @@
+# Copy this file to `home_sweet_home.sources.local.yaml` and fill in local keys.
+# Keep the local file out of git; `.gitignore` excludes `config/*.local.yaml`.
+
+wmata:
+  api_key: null
+  secondary_api_key: null
+  note: "WMATA is free of charge. Some API portal or GTFS endpoints may require the portal subscription key after signup; leave null for no-key tests."
+
+usajobs:
+  authorization_key: "replace_with_usajobs_authorization_key"
+  user_agent: "replace_with_usajobs_registered_email_or_app_contact"
+
+airnow:
+  api_key: "replace_with_airnow_key"
+  note: "Free account/key for air quality observations and forecasts."
+
+census:
+  api_key: "replace_with_census_key"
+  note: "Free key for Census/ACS APIs. Use for area context, not demographic desirability scoring."
+
+noaa_cdo:
+  token: "replace_with_noaa_cdo_token"
+  note: "Free token for NOAA Climate Data Online historical weather and climate data."
+
+bls:
+  registration_key: null
+  note: "Public Data API can be tested without a key; add a registration key only if needed for higher limits."
+
+openstreetmap:
+  use_public_overpass: true
+  use_public_nominatim: true
+  note: "Light tests only. Respect OSM/Overpass/Nominatim usage policies and cache derived results."
+
+nws:
+  api_base_url: "https://api.weather.gov"
+  contact_user_agent: "replace_with_app_or_contact_email"
+  note: "Free/open NWS API for forecasts, alerts and observations."
+
+fema:
+  nfhl_enabled: true
+  msc_url: "https://msc.fema.gov/portal/home"
+  note: "Flood hazard context only; not a property inspection or insurance quote."
+
+fcc_broadband:
+  use_public_downloads: true
+  note: "Use National Broadband Map public downloads/API documentation for broadband availability context."
+
+nces:
+  ccd_enabled: true
+  note: "Use CCD for school directory metadata only; not assignment, eligibility or enrollment."
+
+local_open_data:
+  dc_arcgis_enabled: true
+  maryland_open_data_enabled: true
+  virginia_open_data_enabled: true
+  note: "Use public DC/MD/VA portals for addresses, parcels, schools, parks, libraries, childcare and local services after layer-by-layer review."
+
+regional_transit:
+  maryland_mta_enabled: true
+  virginia_drpt_gtfs_enabled: true
+  note: "Use public regional GTFS/feed resources for MARC, VRE and local transit source checks."
+
+aggregate_market_context:
+  zillow_research_enabled: true
+  redfin_data_center_enabled: true
+  note: "Aggregate market/rent/inventory context only; not live listing evidence."
+
+trellistate:
+  api_key: null
+  agent_id: null
+  note: "Public read endpoints do not require a key."
+
+excluded_sources:
+  rentcast:
+    reason: "Excluded from the strict $0 source path unless a no-payment, no-overage setup is verified."

@@ -14,8 +14,10 @@ Read-only source checks can precede the synthetic application journey; productio
 adapters, external spending and real-household use retain their source and pilot
 gates. The DC companion records a successful public address-source smoke check
 and the unresolved listing, credential and routing dependencies. DEC-HOME-013
-sets the first live-test source budget to $0; keyed feeds must enforce free-quota
-caps and stop before any paid or overage path is reached.
+sets the first live-test source budget to $0, and DEC-HOME-014 excludes RentCast
+from the required setup unless a no-payment, no-overage path is verified. Keyed
+feeds must enforce zero-cost terms and stop before any paid or overage path is
+reached.
 
 ## 1. Existing code and reuse boundary
 
@@ -81,11 +83,11 @@ also identified a Python certificate-trust setup issue; preserve certificate
 verification when implementing network clients.
 
 For the $0 source milestone, implement provider usage controls before any keyed
-adapter runs: per-source request budgets, monthly free-quota ceilings, no stored
-payment method dependency where avoidable, no automatic retries that can spend
-quota after failure, and a `BUDGET_EXHAUSTED` state when the local cap is reached.
-Treat public/no-key listing probes and free developer quotas as source-quality
-tests, not production inventory coverage.
+adapter runs: per-source request budgets, no stored payment method dependency,
+no enabled overage path, no automatic retries that can spend quota after failure,
+and a `BUDGET_EXHAUSTED` state when the local cap is reached. Treat public/no-key
+listing probes and no-cost developer feeds as source-quality tests, not
+production inventory coverage.
 
 ## 3. Minimum data and typed contracts
 

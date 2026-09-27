@@ -36,6 +36,7 @@ The differentiating hypothesis is that combining area discovery, total cost, dai
 | DEC-HOME-011 | Focus first on Washington DC and surrounding Virginia and Maryland (HOME-REG-003), retaining the other nine regions for later expansion. | Confirmed by user, September 27, 2026; core/outer-ring footprint and activation evidence remain proposals |
 | DEC-HOME-012 | Make a limited live-data test the next research milestone for DC/VA/MD. | User-confirmed direction, September 27, 2026; source access, credentials and routing remain unresolved; spending is constrained by DEC-HOME-013; does not authorize purchases, private-household collection or public launch |
 | DEC-HOME-013 | Use a zero-dollar source budget for the first live-data test, prioritizing public APIs and free developer quotas with hard caps. | Confirmed by user, September 27, 2026; free-tier availability and terms require source-specific verification and do not establish complete listing coverage |
+| DEC-HOME-014 | Exclude RentCast from the required $0 setup unless a no-payment, no-overage path is verified. | User correction, September 27, 2026; RentCast official docs describe free monthly requests with overage fees, so it is not treated as required zero-dollar infrastructure |
 
 Confirmed scope choices do not imply that formulas, implementation, commercial terms, pilot launch, or source contracts have been approved. Proposed architecture and backlog below are review aids; they become an executable plan after the spec and extension admission gate are approved.
 
@@ -312,6 +313,35 @@ Each `SourcePolicy` declares ownership, source URL/ID, license and retention rig
 
 RESO supplies standards, not MLS listing data; actual provider access and permitted use must be secured independently. FEMA's Map Service Center provides official NFIP flood-hazard information and notes that maps change; a map result is neither a property inspection nor a complete hazard/insurance assessment. [RESO Web API](https://www.reso.org/reso-web-api/), [FEMA MSC](https://msc.fema.gov/portal/home)
 
+The following zero-dollar or public-source candidates should be tracked for the first
+DC-area benchmark. They are supporting evidence sources, not substitutes for
+licensed listing coverage or address-specific verification.
+
+| Source candidate | Useful component | Access model / first check |
+|---|---|---|
+| [Trellistate](https://trellistate.com/docs) | Active public listing probe | No-key public reads; measure coverage, freshness, attribution and source quality before using in comparisons |
+| [Census API](https://www.census.gov/data/developers.html) / [ACS](https://www.census.gov/programs-surveys/acs) | Area housing, commute, tenure, income and household context | Free Census key; use as context only, and never as demographic desirability scoring |
+| [Census LODES](https://lehd.ces.census.gov/data/#lodes) | Workplace density, origin-destination and employment-hub context | Public downloads; historical employment, not current job openings or hiring probability |
+| [BLS Public Data API](https://www.bls.gov/developers/) | Occupation, wage and labor-market context | Public API; use metro/occupation context separately from current postings |
+| [USAJOBS Search API](https://developer.usajobs.gov/api-reference/get-api-search) | Active federal job postings | Free requested key; covers federal announcements only, with worksite/remote/deduplication caveats |
+| [WMATA developer resources](https://www.wmata.com/about/developers.html) | Metro schedule, real-time, alerts and accessibility source checks | Free; test unauthenticated/public surfaces first and use portal key only where an endpoint requires it |
+| [Maryland MTA developer resources](https://www.mta.maryland.gov/developer-resources), [Virginia DRPT GTFS clearinghouse](https://drpt.virginia.gov/data/gtfs-feed-clearinghouse/) | MARC, VRE and local transit coverage | Public transit feeds; schedule data is not door-to-door route reliability |
+| [OpenStreetMap](https://www.openstreetmap.org/copyright), Overpass and Nominatim policy pages | Amenities, services, street network and basic geocoding tests | Open data with attribution and fair-use/service limits; do not rely on public endpoints for heavy production traffic |
+| DC/VA/MD local open-data and ArcGIS portals | Address points, parcels, parks, libraries, schools, childcare, local services | Public geospatial APIs/downloads; each layer needs freshness, geometry, rights and join review |
+| [FEMA NFHL / MSC](https://msc.fema.gov/portal/home) | Flood hazard context | Official NFIP source; not a complete property hazard or insurance assessment |
+| [NWS API](https://www.weather.gov/documentation/services-web-api), [NOAA CDO](https://www.ncdc.noaa.gov/cdo-web/webservices/v2) | Weather alerts, observations, climate normals and historical weather context | NWS is open/free; NOAA CDO uses a free token with rate limits |
+| [AirNow API](https://docs.airnowapi.org/) | Air quality and smoke context | Free account/key; use source definitions and avoid treating readings as property-specific health advice |
+| [FCC National Broadband Map data](https://help.bdc.fcc.gov/hc/en-us/articles/10467446103579-How-to-Use-the-FCC-s-National-Broadband-Map) | Broadband availability/provider context | Public downloads/API documentation; advertised availability may not prove service at a unit |
+| [NCES CCD](https://nces.ed.gov/ccd/) | School directory, grades served and institutional identifiers | Public-use data; directory facts do not prove address assignment, eligibility or enrollment |
+| [DC Child Development Centers](https://catalog.data.gov/dataset/child-development-centers) and equivalent VA/MD sources | Childcare proximity and licensed-provider context | Public datasets where available; presence/capacity does not prove price, hours, openings or fit |
+| [Zillow Research market data](https://www.zillow.com/research/market-data/), [Redfin Data Center](https://www.redfin.com/news/data-center/) | Aggregate market/rent/inventory context | Free aggregate downloads; not live listing APIs or individual-property evidence |
+
+Potential freemium listing/property APIs, including providers that advertise no-card
+free tiers, remain evaluation-only until terms, rights, overage behavior, source
+lineage and retention are reviewed. A free tier is not enough to satisfy the
+zero-dollar source policy if it can silently create spend or prohibits the
+intended use.
+
 Proposed maximum evidence ages for an active pilot are: listing price/status 24 hours; route estimates 7 days with matching travel window and valid schedule; education access rechecked within 30 days and valid for target academic year; quotes through their stated expiry or 7 days when unspecified; other costs within 90 days plus the correct billing period; annual hazard/administrative layers checked for current edition within 90 days. These are product policies to validate against source SLAs, not claims about refresh availability. A provider with stricter terms or shorter expiry wins. A timestamp cannot make an obsolete academic year or canceled service current.
 
 Store `observed_at`, `effective_from/to`, `published_at` when known, `retrieved_at`, `available_at`, source/version, and status. An as-of result must not use later-available revisions. If history is not licensed or available, label historical replay unavailable rather than substituting today's data. If retention rights prohibit full replay, retain allowed evidence/fingerprints and explicitly mark the run as not fully replayable; do not claim reproducibility from hashes alone.
@@ -401,11 +431,13 @@ Open decisions for the next review:
 7. Validate pricing as a search-period pass or subscription through research. Do not monetize ranking or treat vendor referral revenue as user value.
 
 For the immediate live-data milestone, the user selected a $0 data/API budget.
-Use public APIs, free developer quotas and manual authorized candidates only.
-Do not create paid accounts, enable overages, assume full active-listing
-coverage, or continue queries after a free quota is exhausted. The exact first
-source sample can use the proposed DC core footprint without claiming that the
-full footprint or outer ring is approved.
+Use public APIs, no-key reads, government/agency developer feeds and manual
+authorized candidates only. Exclude any source that requires a paid billing path,
+payment method, enabled overages or uncertain free-tier controls. Do not create
+paid accounts, assume full active-listing coverage or continue queries after a
+free quota is exhausted. The exact first source sample can use the proposed DC
+core footprint without claiming that the full footprint or outer ring is
+approved.
 
 ## 17. Source and repository provenance
 

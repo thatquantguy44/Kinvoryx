@@ -40,8 +40,8 @@ test, and no provider purchase or external outreach is authorized by this choice
 
 | Dependency | What is needed | Work that can proceed now |
 |---|---|---|
-| Property listings | Zero-dollar source path: public read APIs, free developer quotas or manual authorized candidates | Test Trellistate public reads, RentCast free developer quota if an account/key is created, and manual candidate normalization; do not claim a complete active listing universe |
-| Transit/jobs | Credentials for selected authenticated feeds; WMATA and USAJOBS document API-key requirements | Public documentation/source-shape checks and unauthenticated sources where available; prepare key setup steps |
+| Property listings | Zero-dollar source path: public read APIs, no-key reads or manual authorized candidates | Test Trellistate public reads and manual candidate normalization; do not claim a complete active listing universe |
+| Transit/jobs | WMATA is free of charge and may expose some no-key/public surfaces; API portal and GTFS endpoints may still require the portal key. USAJOBS documents API-key requirements. | Public documentation/source-shape checks and unauthenticated sources where available; use the WMATA portal key only where an endpoint requires it |
 | Routing | A selected permitted routing service, self-hosted/open-source routing stack, or explicit manual route estimates | Define origin/destination/time-window tests; a transit schedule alone is not door-to-door routing |
 | Budget | User set the source budget to $0 for the first live-data test | No-cost read-only source checks only; configure hard caps and stop on exhausted free quotas or any required payment |
 | Test profile | Fictional budget/preferences for source/engine testing; actual preferences only when intentionally supplied | Use synthetic profile fixtures without collecting personal household data |
@@ -59,22 +59,20 @@ check succeeded using the macOS system curl client with certificate verification
 enabled. Resolve the runtime's trusted certificate configuration before a Python
 adapter uses this source; do not disable TLS verification.
 
-Still untested: live property listings, authenticated WMATA/USAJOBS feeds,
+Still untested: live property listings, WMATA endpoint access with and without a portal key, authenticated USAJOBS feeds,
 door-to-door routes, Virginia/Maryland source samples and cross-source joins.
 The next evidence report should test a small permitted buy/rent sample across
 DC/VA/MD for identity, costs, source age, school-year lookup and route/job joins,
 with explicit blocked fields and no passing status inferred from missing data.
 
 Zero-dollar listing path: use [Trellistate public listing search](https://trellistate.com/docs)
-as a no-key public-read probe and [RentCast](https://help.rentcast.io/en/articles/7992900-rentcast-property-data-api)
-as a small keyed free-quota probe if the user creates a developer account. RentCast
-documents a free developer plan with 50 API requests/month and property listing
-endpoints for sale and long-term rental listings; the first adapter must enforce
-a local request cap below the free quota and disable overage or paid plans.
-Trellistate documents public read endpoints, rate limits and attribution
-expectations; because it is a user-submitted public listing exchange, coverage,
-accuracy and DC-area inventory must be measured, not assumed. Bright MLS remains
-a later licensed-source investigation rather than the $0 listing path.
+as a no-key public-read probe plus manual authorized candidates. Trellistate
+documents public read endpoints, rate limits and attribution expectations;
+because it is a user-submitted public listing exchange, coverage, accuracy and
+DC-area inventory must be measured, not assumed. RentCast is excluded from the
+required $0 path unless a no-payment, no-overage setup is verified; its official
+API pricing docs describe a free monthly allowance with overage fees. Bright MLS
+remains a later licensed-source investigation rather than the $0 listing path.
 
 ## 2. Proposed geographic scope
 
@@ -116,14 +114,20 @@ The following are primary-source leads reviewed on September 27, 2026. Their exi
 
 | Capability | Evidence lead | Next investigation / deliverable |
 |---|---|---|
-| Listing discovery | $0 path: [Trellistate public listing API](https://trellistate.com/docs), [RentCast API setup](https://help.rentcast.io/en/articles/7992900-rentcast-property-data-api), [RentCast listing endpoints](https://developers.rentcast.io/reference/property-listings). Later licensed path: [Bright MLS developer portal](https://brightmls.portal.swaggerhub.com/) | For $0 testing, inspect a tiny permitted buy/rent sample, source age, fields, duplicate IDs, rights, attribution, and free-quota controls. Treat Trellistate as public/user-submitted coverage and RentCast as quota-limited provider coverage. Evaluate Bright MLS separately for licensed sale/rental access, necessary commercial relationship, permitted derived area summaries and exports. |
+| Listing discovery | $0 path: [Trellistate public listing API](https://trellistate.com/docs), plus manual authorized candidates. Excluded from required $0 path unless no-overage/no-payment is proven: [RentCast API pricing](https://developers.rentcast.io/reference/billing-and-pricing). Later licensed path: [Bright MLS developer portal](https://brightmls.portal.swaggerhub.com/) | For $0 testing, inspect a tiny permitted buy/rent sample, source age, fields, duplicate IDs, rights and attribution. Treat Trellistate as public/user-submitted coverage. Evaluate Bright MLS and any paid/overage-capable provider separately for licensed sale/rental access, necessary commercial relationship, permitted derived area summaries and exports. |
 | Address/geography | [DC GIS address-point layer](https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Location_WebMercator/MapServer/0) plus locality GIS for VA/MD | Versioned polygons and address precision; rights/joins review. DC data does not validate Virginia or Maryland addresses. |
-| Metro travel | [WMATA developer resources](https://www.wmata.com/about/developers.html), [license](https://developer.wmata.com/license) | Confirm key/license requirements, schedules, alerts, accessibility status and permitted caching. The feed is an input to route planning, not a full household door-to-door routing engine. |
+| Metro travel | [WMATA developer resources](https://www.wmata.com/about/developers.html), [license](https://developer.wmata.com/license) | Confirm which endpoints work without a key and which require the free API portal key; verify schedules, alerts, accessibility status and permitted caching. The feed is an input to route planning, not a full household door-to-door routing engine. |
 | Regional/local transit | [Maryland MTA developer resources](https://www.mta.maryland.gov/developer-resources), [Virginia DRPT feed registry](https://drpt.virginia.gov/data/gtfs-feed-clearinghouse/) | Audit MARC/VRE and applicable local bus operators, active dates and modes. Keep unsupported connections explicit. |
 | Current federal jobs | [USAJOBS Search API](https://developer.usajobs.gov/api-reference/get-api-search) | Authenticated announcement feed, source terms, worksite/remote fields, closing date and deduplication. It covers federal announcements, not the entire regional job market. |
 | Broader job access | [Census LODES](https://lehd.ces.census.gov/data/lehd-code-samples/sections/lodes.html), [BLS occupation context](https://www.bls.gov/OES/current/oessrcma.htm), separately licensed current postings | Distinguish historical industry employment, regional wage context, employer sites and live openings. Identify current private/nonprofit/local-government coverage gaps. |
+| Area context | [Census API](https://www.census.gov/data/developers.html), ACS, public Census geography | Use for area-level housing/commute/tenure context and geography enrichment; do not use demographic variables as desirability scores or protected-class targeting proxies. |
+| Amenities and services | [OpenStreetMap](https://www.openstreetmap.org/copyright), local DC/VA/MD open-data portals and ArcGIS services | Test groceries, parks, libraries, clinics, trails and other user-selected amenities with attribution and service-use limits. Presence does not prove quality, accessibility, capacity or opening hours. |
+| Schools directory context | [NCES CCD](https://nces.ed.gov/ccd/) plus local school-system sources below | Directory IDs, addresses, grades served and status help normalize schools; they do not prove current assignment, eligibility, transport or enrollment. |
+| Childcare | [DC Child Development Centers](https://catalog.data.gov/dataset/child-development-centers) plus Virginia and Maryland licensed-provider sources to be identified | Validate provider location, license/source date, capacity fields, service type and hours where available. No available-seat, price or program-fit claim without timely source evidence. |
+| Broadband | [FCC National Broadband Map downloads/API documentation](https://help.bdc.fcc.gov/hc/en-us/articles/10467446103579-How-to-Use-the-FCC-s-National-Broadband-Map) | Useful for remote-work feasibility context. Advertised/provider-reported availability must not be treated as verified service at a unit. |
 | Local cost | Local assessor/collector sources; example [Fairfax tax categories](https://www.fairfaxcounty.gov/taxes/node/295); actual lease/HOA and insurance evidence | Build jurisdiction-specific cost checklists, including property/municipal costs, vehicle ownership costs where applicable, parking, tolls, fees and childcare. No copied tax-rate defaults or automatic legal eligibility. |
-| Environment/property | Parent Spec 013 official hazard leads plus condition/insurance evidence | Verify scale, vintage and exact address applicability; never infer insurability or indoor conditions from an area layer. |
+| Environment/property | Parent Spec 013 official hazard leads, [FEMA NFHL/MSC](https://msc.fema.gov/portal/home), [NWS API](https://www.weather.gov/documentation/services-web-api), [NOAA CDO](https://www.ncdc.noaa.gov/cdo-web/webservices/v2), [AirNow API](https://docs.airnowapi.org/), plus condition/insurance evidence | Verify scale, vintage and exact address applicability; never infer insurability, indoor conditions or health impact from an area layer. |
+| Aggregate market context | [Zillow Research market data](https://www.zillow.com/research/market-data/), [Redfin Data Center](https://www.redfin.com/news/data-center/) | Use for area-level market/rent/inventory context only. These are not live listing APIs and cannot validate individual candidate availability or price. |
 
 Each source investigation produces a small evidence card: provider and authoritative domain; grain/keys; coverage; freshness; historical availability; rights for ingestion, cache, derivatives and exports; technical access; expected query spend; sample validation; owner; blockers and fallback. A lookalike domain or reseller claim is not treated as the provider's own terms. Model a denied API request, rights revocation and budget exhaustion before adopting an adapter.
 
@@ -134,8 +138,7 @@ secrets in the repo or to exceed free plans.
 
 | Source | Why we need it | Setup link |
 |---|---|---|
-| RentCast | Small sale/rental listing sample under the free developer quota | [RentCast API dashboard](https://app.rentcast.io/app/api) and [getting-started guide](https://help.rentcast.io/en/articles/7992900-rentcast-property-data-api) |
-| WMATA | Official Metro schedule, real-time and accessibility feed access | [WMATA developer resources](https://www.wmata.com/about/developers.html), [developer portal](https://developer.wmata.com/), and [registration link](https://developer.wmata.com/signup) |
+| WMATA | Official Metro schedule, real-time and accessibility feed access; free of charge, with portal key used only where required | [WMATA developer resources](https://www.wmata.com/about/developers.html), [developer portal](https://developer.wmata.com/), and [registration link](https://developer.wmata.com/signup) |
 | USAJOBS | Current federal job announcements for additional-job access tests | [USAJOBS API request form](https://developer.usajobs.gov/apirequest/index) and [authentication guide](https://developer.usajobs.gov/guides/authentication) |
 
 Trellistate public reads do not require a key. If we need write actions or agent
