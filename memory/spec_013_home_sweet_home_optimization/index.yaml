@@ -2,6 +2,28 @@ workflow_id: spec_013_home_sweet_home_optimization
 updated_at: "2026-09-27"
 access_level: repo
 records:
+  - id: MEM-HOME-20260927-007
+    scope: spec_013_source_benchmark_implementation
+    type: validation
+    statement: "A metadata-only zero-dollar source benchmark is implemented for Spec 013. The September 27 run checked Trellistate, WMATA no-key/keyed, USAJOBS, AirNow, NOAA CDO, NWS, OpenFEMA, FEMA NFHL, Census ACS and BLS; 10 probes succeeded and WMATA no-key returned HTTP 401 while keyed WMATA succeeded. Trellistate responded but returned an empty tiny DC listing sample. Raw payloads, listing rows, keys, addresses and household data were not retained."
+    evidence:
+      - source_run: "2026-09-27-home-source-benchmark-run"
+        artifact: docs/runbooks/home-sweet-home-source-check.md
+        reference: "Runbook records commands, source statuses, no raw-payload retention and current evidence summary."
+      - source_run: "2026-09-27-home-source-benchmark-implementation"
+        artifact: src/kinvoryx/housing_sources.py
+        reference: "SourcePolicy and SourceCheckResult contracts plus metadata-only probes."
+      - source_run: "2026-09-27-home-source-benchmark-fixtures"
+        artifact: data/home_sweet_home/dc_benchmark_profiles.json
+        reference: "Six fictional DC-area benchmark profiles; no real household data."
+    confidence: high
+    corroboration_count: 3
+    first_seen: "2026-09-27"
+    last_confirmed: "2026-09-27"
+    status: active
+    access_level: repo
+    pit_scope: "2026-09-27"
+    author: u-397257ca11bf237e5ed4840b
   - id: MEM-HOME-20260927-006
     scope: spec_013_zero_budget_supporting_sources
     type: decision

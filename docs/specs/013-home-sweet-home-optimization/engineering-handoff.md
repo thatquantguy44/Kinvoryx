@@ -2,7 +2,7 @@
 
 **Parent:** [Spec 013](spec.md)\
 **Date:** September 27, 2026\
-**Status:** Proposed design and backlog for review; no implementation or passed acceptance evidence\
+**Status:** Proposed design and backlog for review; source-contract benchmark implemented; housing engine and pilot gates not implemented\
 **Region contract:** [Ten-region companion](pilot-regions.md)
 
 **First regional focus:** [Washington DC and surrounding VA/MD](dc-area-pilot.md),
@@ -18,6 +18,15 @@ sets the first live-test source budget to $0, and DEC-HOME-014 excludes RentCast
 from the required setup unless a no-payment, no-overage path is verified. Keyed
 feeds must enforce zero-cost terms and stop before any paid or overage path is
 reached.
+
+**Implemented research artifacts:** [housing_sources.py](../../../src/kinvoryx/housing_sources.py)
+defines metadata-only source policies and read-only probes; [home_sweet_home_source_check.py](../../../scripts/home_sweet_home_source_check.py)
+runs the zero-dollar source check against the ignored local YAML; [source check
+runbook](../../runbooks/home-sweet-home-source-check.md) records use and current
+evidence; [DC fictional benchmark profiles](../../../data/home_sweet_home/dc_benchmark_profiles.json)
+provide initial synthetic inputs. These artifacts do not implement the housing
+recommendation engine, listing normalization, routing engine, education lookup or
+pilot readiness gate.
 
 ## 1. Existing code and reuse boundary
 
@@ -88,6 +97,15 @@ no enabled overage path, no automatic retries that can spend quota after failure
 and a `BUDGET_EXHAUSTED` state when the local cap is reached. Treat public/no-key
 listing probes and no-cost developer feeds as source-quality tests, not
 production inventory coverage.
+
+The first source benchmark is implemented as a metadata-only health check rather
+than a data-ingestion adapter. It validates endpoint reachability, authentication,
+JSON shape, top-level keys, count hints and timing while discarding raw payloads.
+The latest run succeeded for 10 probes and warned for one: WMATA station
+predictions returned HTTP 401 without a key, while the keyed WMATA request
+succeeded. Trellistate responded but the tiny DC query returned an empty sample,
+so listing coverage remains unproven. Python HTTPS uses Certifi for verified TLS
+to avoid disabling certificate verification.
 
 ## 3. Minimum data and typed contracts
 

@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "created_for": "Spec 013 Home Sweet Home DC-area source benchmark",
+  "profile_origin": "fictional",
+  "raw_household_data": false,
+  "region": "HOME-REG-003",
+  "profiles": [
+    {
+      "profile_id": "HOME-DC-PROFILE-001",
+      "label": "renter_transit_no_school",
+      "tenure_modes": ["rent"],
+      "jurisdiction_focus": ["District of Columbia", "Arlington County"],
+      "monthly_housing_envelope_usd": {"min": 2200, "max": 3200},
+      "upfront_cash_envelope_usd": {"min": 4000, "max": 9000},
+      "property_needs": {"beds_min": 1, "baths_min": 1, "pets": false, "step_free_required": false},
+      "destinations": [
+        {"label": "downtown_dc_work", "area": "Metro Center / Federal Triangle", "modes": ["transit", "walk"], "arrival_window": "08:30-09:30", "onsite_days_per_week": 3}
+      ],
+      "education_enabled": false,
+      "additional_job_access": {"enabled": true, "roles": ["policy analyst", "operations analyst"], "max_travel_minutes": 45},
+      "must_haves": ["transit_access_under_45_minutes", "contract_rent_within_envelope"],
+      "source_checks_required": ["trellistate_public_listings", "wmata_predictions_keyed", "usajobs_search", "nws_points", "airnow_zip_observation"]
+    },
+    {
+      "profile_id": "HOME-DC-PROFILE-002",
+      "label": "buyer_school_enabled",
+      "tenure_modes": ["buy"],
+      "jurisdiction_focus": ["Montgomery County", "District of Columbia"],
+      "monthly_housing_envelope_usd": {"min": 3600, "max": 5200},
+      "upfront_cash_envelope_usd": {"min": 90000, "max": 180000},
+      "property_needs": {"beds_min": 3, "baths_min": 2, "pets": false, "step_free_required": false},
+      "destinations": [
+        {"label": "downtown_dc_work", "area": "Farragut North / McPherson Square", "modes": ["transit", "drive"], "arrival_window": "08:00-09:00", "onsite_days_per_week": 4}
+      ],
+      "education_enabled": true,
+      "education": {"grade_band": "elementary", "target_academic_year": "2027-2028", "program_interests": ["neighborhood_assignment", "language_program_optional"]},
+      "additional_job_access": {"enabled": true, "roles": ["project manager", "program manager"], "max_travel_minutes": 60},
+      "must_haves": ["address_specific_school_status", "cash_to_close_within_envelope"],
+      "source_checks_required": ["fema_nfhl_metadata", "census_acs_profile", "nces", "local_open_data", "wmata_predictions_keyed"]
+    },
+    {
+      "profile_id": "HOME-DC-PROFILE-003",
+      "label": "two_adults_competing_commutes",
+      "tenure_modes": ["rent", "buy"],
+      "jurisdiction_focus": ["Fairfax County", "Alexandria", "Arlington County"],
+      "monthly_housing_envelope_usd": {"min": 3000, "max": 4700},
+      "upfront_cash_envelope_usd": {"min": 12000, "max": 110000},
+      "property_needs": {"beds_min": 2, "baths_min": 2, "pets": true, "step_free_required": false},
+      "destinations": [
+        {"label": "member_a_work", "area": "Tysons / McLean", "modes": ["drive", "transit"], "arrival_window": "08:30-09:30", "onsite_days_per_week": 3},
+        {"label": "member_b_work", "area": "Navy Yard / Capitol Riverfront", "modes": ["transit", "drive"], "arrival_window": "09:00-10:00", "onsite_days_per_week": 2}
+      ],
+      "education_enabled": false,
+      "additional_job_access": {"enabled": true, "roles": ["software engineer", "federal contractor"], "max_travel_minutes": 60},
+      "must_haves": ["member_specific_commutes_visible", "pet_rules_known_or_pending"],
+      "source_checks_required": ["wmata_predictions_keyed", "usajobs_search", "census_acs_profile", "trellistate_public_listings"]
+    },
+    {
+      "profile_id": "HOME-DC-PROFILE-004",
+      "label": "accessibility_transit_reliant",
+      "tenure_modes": ["rent"],
+      "jurisdiction_focus": ["District of Columbia", "Arlington County", "Alexandria"],
+      "monthly_housing_envelope_usd": {"min": 2400, "max": 3800},
+      "upfront_cash_envelope_usd": {"min": 5000, "max": 12000},
+      "property_needs": {"beds_min": 1, "baths_min": 1, "pets": false, "step_free_required": true},
+      "destinations": [
+        {"label": "medical_destination", "area": "Foggy Bottom / West End", "modes": ["transit", "paratransit_context"], "arrival_window": "10:00-12:00", "onsite_days_per_week": 1},
+        {"label": "work_destination", "area": "L'Enfant Plaza", "modes": ["transit"], "arrival_window": "08:30-09:30", "onsite_days_per_week": 2}
+      ],
+      "education_enabled": false,
+      "additional_job_access": {"enabled": false},
+      "must_haves": ["step_free_status_known_or_pending", "accessible_route_not_assumed_from_station_proximity"],
+      "source_checks_required": ["wmata_predictions_keyed", "local_open_data", "openstreetmap", "nws_points"]
+    },
+    {
+      "profile_id": "HOME-DC-PROFILE-005",
+      "label": "remote_worker_broadband_air_quality",
+      "tenure_modes": ["rent", "buy"],
+      "jurisdiction_focus": ["Prince George's County", "Montgomery County", "District of Columbia"],
+      "monthly_housing_envelope_usd": {"min": 2600, "max": 4300},
+      "upfront_cash_envelope_usd": {"min": 8000, "max": 90000},
+      "property_needs": {"beds_min": 2, "baths_min": 1, "pets": true, "step_free_required": false, "dedicated_workspace": true},
+      "destinations": [
+        {"label": "occasional_dc_meeting", "area": "Union Station / NoMa", "modes": ["transit", "drive"], "arrival_window": "09:00-10:00", "onsite_days_per_week": 1}
+      ],
+      "education_enabled": false,
+      "additional_job_access": {"enabled": true, "roles": ["remote-friendly analyst", "customer success"], "max_travel_minutes": 75},
+      "must_haves": ["broadband_context_available", "air_quality_context_available", "workspace_fit"],
+      "source_checks_required": ["fcc_broadband", "airnow_zip_observation", "nws_points", "census_acs_profile"]
+    },
+    {
+      "profile_id": "HOME-DC-PROFILE-006",
+      "label": "childcare_timing_mixed_tenure",
+      "tenure_modes": ["rent", "buy"],
+      "jurisdiction_focus": ["Alexandria", "Fairfax County", "Falls Church"],
+      "monthly_housing_envelope_usd": {"min": 3300, "max": 5100},
+      "upfront_cash_envelope_usd": {"min": 10000, "max": 140000},
+      "property_needs": {"beds_min": 3, "baths_min": 2, "pets": false, "step_free_required": false},
+      "destinations": [
+        {"label": "member_a_work", "area": "Pentagon City / Crystal City", "modes": ["transit", "drive"], "arrival_window": "08:00-09:00", "onsite_days_per_week": 3},
+        {"label": "childcare_pickup_window", "area": "to_be_selected_near_home", "modes": ["drive", "walk"], "arrival_window": "17:00-18:00", "onsite_days_per_week": 5}
+      ],
+      "education_enabled": true,
+      "education": {"grade_band": "pre-k / early elementary", "target_academic_year": "2027-2028", "program_interests": ["childcare", "neighborhood_assignment_optional"]},
+      "additional_job_access": {"enabled": true, "roles": ["health administration", "operations"], "max_travel_minutes": 50},
+      "must_haves": ["childcare_source_status_visible", "pickup_timing_not_inferred_from_distance", "buy_rent_common_horizon"],
+      "source_checks_required": ["local_open_data", "wmata_predictions_keyed", "fema_nfhl_metadata", "openfema_disaster_declarations"]
+    }
+  ]
+}

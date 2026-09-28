@@ -56,14 +56,24 @@ assignment or housing recommendations. [DC GIS service](https://maps2.dcgis.dc.g
 
 The initial Python HTTPS client failed certificate-chain verification. The same
 check succeeded using the macOS system curl client with certificate verification
-enabled. Resolve the runtime's trusted certificate configuration before a Python
-adapter uses this source; do not disable TLS verification.
+enabled. The later source benchmark uses Certifi for verified Python TLS; do not
+disable TLS verification.
 
-Still untested: live property listings, WMATA endpoint access with and without a portal key, authenticated USAJOBS feeds,
-door-to-door routes, Virginia/Maryland source samples and cross-source joins.
-The next evidence report should test a small permitted buy/rent sample across
-DC/VA/MD for identity, costs, source age, school-year lookup and route/job joins,
-with explicit blocked fields and no passing status inferred from missing data.
+Current source-benchmark evidence: a metadata-only run on September 27 checked
+Trellistate, WMATA no-key and keyed access, USAJOBS, AirNow, NOAA CDO, NWS,
+OpenFEMA, FEMA NFHL, Census ACS and BLS. Ten probes succeeded and one warned:
+WMATA station predictions returned HTTP 401 without a key, while the keyed
+WMATA request succeeded. Trellistate responded but the tiny DC public-listing
+query returned an empty sample. No raw API payloads, listing rows, keys,
+addresses or household data were retained. The runbook is
+[Home Sweet Home Source Check](../../runbooks/home-sweet-home-source-check.md).
+
+Still untested: door-to-door routes, Virginia/Maryland locality-specific samples,
+school-year assignment joins, childcare availability, broadband-at-unit
+verification, live listing completeness and cross-source joins. The next
+evidence report should test a small permitted buy/rent sample across DC/VA/MD
+for identity, costs, source age, school-year lookup and route/job joins, with
+explicit blocked fields and no passing status inferred from missing data.
 
 Zero-dollar listing path: use [Trellistate public listing search](https://trellistate.com/docs)
 as a no-key public-read probe plus manual authorized candidates. Trellistate
@@ -186,7 +196,7 @@ Within the prototype, obtain useful feedback on area discovery before adding aut
 
 ## 8. Local benchmark and readiness evidence
 
-Start with 12 synthetic search profiles: two profiles for each DC/VA/MD × buy/rent combination. Vary education on/off, childcare timing, single versus multiple adults, car/transit/accessibility needs, budget, move year, and current/future job access. Include mixed-tenure comparisons as additional scenarios. Profiles exercise preferences without representing demographic target groups or real households.
+Start with 12 synthetic search profiles: two profiles for each DC/VA/MD × buy/rent combination. Vary education on/off, childcare timing, single versus multiple adults, car/transit/accessibility needs, budget, move year, and current/future job access. Include mixed-tenure comparisons as additional scenarios. Profiles exercise preferences without representing demographic target groups or real households. The first implemented fixture is [dc_benchmark_profiles.json](../../../data/home_sweet_home/dc_benchmark_profiles.json), with six fictional profiles that cover renter transit, buyer education, competing commutes, accessibility, remote-work broadband/air quality and childcare timing. It is an initial fixture set, not the full 12-profile benchmark.
 
 Use the parent 20-sale/20-rental source-review minimum for the region, distributed across all claimed core jurisdictions; disclose property/type/source gaps. School checks must meet both the parent minimum of 20 and at least three checks per supported school authority, including boundary/year/program exceptions. Retain at least 30 route checks spread across enabled modes, travel windows and DC/VA/MD origin-destination pairs; not every possible route is thereby validated. Audit at least ten area and ten street-segment results under the parent rules. Inspect at least 20 current postings if that capability is enabled; federal-only coverage remains labeled federal-only.
 

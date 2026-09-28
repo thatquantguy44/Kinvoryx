@@ -38,6 +38,7 @@ nws:
 
 fema:
   nfhl_enabled: true
+  openfema_enabled: true
   msc_url: "https://msc.fema.gov/portal/home"
   note: "Flood hazard context only; not a property inspection or insurance quote."
 

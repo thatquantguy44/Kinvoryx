@@ -5,6 +5,27 @@ scope. They contain no real household inputs, private destinations, listing rows
 or credentials. Specs remain authoritative. Record provenance and pseudonymous
 attribution are maintained in [index.yaml](index.yaml).
 
+## MEM-HOME-20260927-007 — Source Benchmark Is Implemented
+
+- **Scope:** spec_013_source_benchmark_implementation
+- **Type:** validation
+- **Statement:** A metadata-only zero-dollar source benchmark now exists for
+  Spec 013, with source contracts, a CLI runner, a runbook and six fictional
+  DC-area profiles.
+- **Evidence:** [source-check runbook](../../docs/runbooks/home-sweet-home-source-check.md), [housing source contracts](../../src/kinvoryx/housing_sources.py), [fictional DC profiles](../../data/home_sweet_home/dc_benchmark_profiles.json), September 27 local run.
+- **Confidence:** high for runner execution and metadata evidence; no listing
+  coverage, route correctness or recommendation readiness implied.
+- **Status:** active
+- **Access level:** repo
+- **Date:** 2026-09-27
+
+The source check retained no raw API payloads, listings, addresses, keys or real
+household data. The run produced 10 successful probes and one warning: WMATA
+station predictions returned HTTP 401 without a key while the keyed request
+succeeded. Trellistate responded but returned an empty tiny DC listing sample, so
+listing coverage remains unproven. Python HTTPS uses Certifi for verified TLS;
+do not disable certificate verification to make source probes pass.
+
 ## MEM-HOME-20260927-006 — Preserve Free Supporting-Variable Sources
 
 - **Scope:** spec_013_zero_budget_supporting_sources

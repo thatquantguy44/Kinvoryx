@@ -171,8 +171,16 @@ DEC-HOME-014 excludes it from the required $0 setup unless a no-payment,
 no-overage path is verified. The current setup path is WMATA free developer
 access and USAJOBS; WMATA should be tested both without a key and with the portal
 key where an endpoint requires it. Trellistate remains the no-key listing probe.
-This does not establish complete active-listing coverage. Real household data,
-paid services and pilot activation are not authorized by this research preference.
+The first metadata-only source benchmark is now implemented in
+[housing_sources.py](../src/kinvoryx/housing_sources.py) and
+[home_sweet_home_source_check.py](../scripts/home_sweet_home_source_check.py),
+with operating notes in the [source-check runbook](runbooks/home-sweet-home-source-check.md).
+The September 27 run produced 10 successful probes and one warning: WMATA
+requires the portal key for the tested station-prediction endpoint, while the
+keyed request succeeded. Trellistate responded but returned an empty tiny DC
+sample, so active-listing coverage remains unproven. This does not establish
+complete active-listing coverage. Real household data, paid services and pilot
+activation are not authorized by this research preference.
 
 ## 9. Repository Memory Protocol
 

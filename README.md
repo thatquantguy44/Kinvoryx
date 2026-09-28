@@ -16,6 +16,17 @@ Run the deterministic validation harness and unit tests with:
 python3 -m unittest discover -s tests -v
 ```
 
+Run the Home Sweet Home zero-dollar source benchmark with an ignored local source
+config:
+
+```sh
+python3 scripts/home_sweet_home_source_check.py \
+  --output /private/tmp/kinvoryx_home_sweet_home_source_check.json
+```
+
+The benchmark records metadata only. See
+[docs/runbooks/home-sweet-home-source-check.md](docs/runbooks/home-sweet-home-source-check.md).
+
 Preview the household and reviewer export artifacts with:
 
 ```sh
